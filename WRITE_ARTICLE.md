@@ -19,21 +19,23 @@ Now you can write articles. Please note that it is not allowed to just create th
 - Inside your username, create a folder that will be the URL title. e.g. `supervised-vs-unsupervised-learning`. Please note that this name can only contain hyphens and english alphabets.
 - Write your article in `ARTICLE.md` inside this folder.
 - Add assets, e.g. any images to `assets` inside this folder.
+- Create a file called `title` (without extensions) and add title of your article. It is the name that will be used everywhere in the website. Note that your `ARTICLE.md` must also have a title. :
 
 Final structure should look like this:
 
     datamuni
-    |-- users
-        |-- username
-        |   |-- PROFILE.md
-        |   |-- article-example-1
-        |   |   |-- ARTICLE.md
-        |   |   `-- assets
-        |   |       |-- 1.png
-        |   |       |-- 2.png
-        |   |       `-- 3.png
-        |	|-- article-example-2
-        |	|   |-- ARTICLE.md
+        |-- users
+            |-- username
+            |   |-- PROFILE.md
+            |   |-- article-example-1
+            |   |   |-- ARTICLE.md
+            |   |   |-- title
+            |   |   `-- assets
+            |   |       |-- 1.png
+            |   |       |-- 2.png
+            |   |       `-- 3.png
+            |	|-- article-example-2
+            |	|   |-- ARTICLE.md
 
 
 Please note:
