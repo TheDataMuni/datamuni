@@ -2,6 +2,7 @@
 
 ....is pretty easy!
 
+Step 0: Fork this repository!
 
 ### First time user
 
