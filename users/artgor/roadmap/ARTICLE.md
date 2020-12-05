@@ -1,3 +1,5 @@
+# A long-term Data Science roadmap which WON'T help you become an expert in only several months
+
 [Original article](https://towardsdatascience.com/a-long-term-data-science-roadmap-which-wont-help-you-become-an-expert-in-only-several-months-4436733e63ff)
 
 From time to time I am asked: how does one become a data scientist? What courses are necessary? How long will it take? How did you become a DS? I have answered this question several times, so it seems to me that writing a post could be a good idea to help the aspiring data scientists.
