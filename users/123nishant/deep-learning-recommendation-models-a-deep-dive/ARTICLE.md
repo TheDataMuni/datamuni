@@ -95,6 +95,7 @@ It is designed to capture interactions between features within high dimensional 
 
 ![](https://cdn-images-1.medium.com/max/800/0*jI_TfRWbUw6oRGci)
 
+
 ![](https://cdn-images-1.medium.com/max/600/0*tkFVjfYMiOKsEFce)
 
 FMs factorize 2nd order interaction matrix to its latent factors (or embedding vectors) as in matrix factorization, which more effectively handles sparse data.
