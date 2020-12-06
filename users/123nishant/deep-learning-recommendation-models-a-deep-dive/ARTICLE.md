@@ -88,7 +88,7 @@ It is designed to capture interactions between features within high dimensional 
 
 ![](https://cdn-images-1.medium.com/max/800/0*-8Q3H2GSzt1eTRG9)
 
-Features of Factorization Machines (FM) :
+**Features of Factorization Machines (FM) :**
 
 *   Able to estimate interactions in sparse settings because they break independence of interaction by parameters by factoring them.
 *   Incorporates 2nd order interactions into a linear model with categorical data by defining a model of the form.
