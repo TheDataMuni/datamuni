@@ -1,8 +1,8 @@
 
-### **Deep Learning Recommendation Models : A Deep Dive**
+# **Deep Learning Recommendation Models : A Deep Dive**
 
 
-## **In the 21st century the currency is not Data. It’s the Attention of People.**
+# **In the 21st century the currency is not Data. It’s the Attention of People.**
 
 Recommendation systems are built to predict what users might like, especially when there are lots of choices available.
 
@@ -366,7 +366,7 @@ Therefore ,64-bit GEMMs has been added to FBGEMM . It achieves 10.5 GOPs/sec o
 5.  The Architectural Implications of Facebook’sDNN-based Personalized Recommendation [https://arxiv.org/pdf/1906.03109.pdf](https://arxiv.org/pdf/1906.03109.pdf)
 6.  [https://github.com/pytorch/FBGEMM/wiki/Recent-feature-additions-and-improvements-in-FBGEMM](https://github.com/pytorch/FBGEMM/wiki/Recent-feature-additions-and-improvements-in-FBGEMM)
 
-7\. Open-sourcing FBGEMM for state-of-the-art server-side inference
+7. Open-sourcing FBGEMM for state-of-the-art server-side inference
 
 [**Open-sourcing FBGEMM for server-side inference - Facebook Engineering**  
 _Facebook is open-sourcing FBGEMM, a high-performance kernel library, optimized for server-side inference. Unlike other…_engineering.fb.com](https://engineering.fb.com/ml-applications/fbgemm/ "https://engineering.fb.com/ml-applications/fbgemm/")[](https://engineering.fb.com/ml-applications/fbgemm/)
