@@ -2,7 +2,7 @@
 # **Deep Learning Recommendation Models : A Deep Dive**
 
 
-# **In the 21st century the currency is not Data. It’s the Attention of People.**
+## **In the 21st century the currency is not Data. It’s the Attention of People.**
 
 Recommendation systems are built to predict what users might like, especially when there are lots of choices available.
 
