@@ -68,20 +68,6 @@ df_sets.query("set_num.str.contains('41311')", engine='python')
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -104,7 +90,6 @@ df_sets.query("set_num.str.contains('41311')", engine='python')
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -130,20 +115,7 @@ df_sets[df_sets['set_num'] == '41311-1']
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -166,7 +138,6 @@ df_sets[df_sets['set_num'] == '41311-1']
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -251,20 +222,6 @@ df_sets[df_sets['set_num'] == '41311-1'][['name','year']]
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -281,7 +238,6 @@ df_sets[df_sets['set_num'] == '41311-1'][['name','year']]
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -297,20 +253,6 @@ df_sets.loc[[236, 3582]]
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -341,7 +283,6 @@ df_sets.loc[[236, 3582]]
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -367,20 +308,6 @@ df_sets.drop(['year'], axis = 1).head(5)
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -429,7 +356,6 @@ df_sets.drop(['year'], axis = 1).head(5)
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -461,20 +387,6 @@ df_sets.set_index('set_num').head()
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -530,7 +442,6 @@ df_sets.set_index('set_num').head()
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -544,20 +455,6 @@ df_sets.set_index(['year', 'set_num']).sort_index(axis=0).head() # axis = 0 => r
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -609,7 +506,6 @@ df_sets.set_index(['year', 'set_num']).sort_index(axis=0).head() # axis = 0 => r
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -623,20 +519,6 @@ df_sets.loc[[236, 3582]].reset_index(drop = True) # set drop = False to keep the
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -667,7 +549,6 @@ df_sets.loc[[236, 3582]].reset_index(drop = True) # set drop = False to keep the
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -782,20 +663,6 @@ df_sets.merge(df_inventories, how = 'inner', left_on = 'set_num', right_on = 'se
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -862,7 +729,6 @@ df_sets.merge(df_inventories, how = 'inner', left_on = 'set_num', right_on = 'se
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -1230,20 +1096,6 @@ df_test_from_df
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1382,7 +1234,6 @@ df_test_from_df
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -1464,20 +1315,6 @@ df_missing_parts
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1520,7 +1357,6 @@ df_missing_parts
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -1634,20 +1470,6 @@ df_sets_with_missing_parts.groupby(['set_num']).count()  .sort_values('set_num',
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1746,7 +1568,6 @@ df_sets_with_missing_parts.groupby(['set_num']).count()  .sort_values('set_num',
   </tbody>
 </table>
 <p>468 rows × 4 columns</p>
-</div>
 
 
 
@@ -1763,20 +1584,6 @@ df_sets_with_missing_parts.groupby(['set_num'], as_index = False) \
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1856,7 +1663,6 @@ df_sets_with_missing_parts.groupby(['set_num'], as_index = False) \
   </tbody>
 </table>
 <p>468 rows × 3 columns</p>
-</div>
 
 
 
@@ -1879,20 +1685,6 @@ df_sets_with_missing_parts.head(5)
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1953,7 +1745,6 @@ df_sets_with_missing_parts.head(5)
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -1982,20 +1773,6 @@ df_sets_with_missing_parts
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2155,7 +1932,6 @@ df_sets_with_missing_parts
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -2321,20 +2097,6 @@ fire_engine_info
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2373,7 +2135,6 @@ fire_engine_info
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
@@ -2398,20 +2159,6 @@ fire_engine_info.apply(lambda x: cat_sorted(x, fire_engine_info, 'name', 'level'
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2434,7 +2181,6 @@ fire_engine_info.apply(lambda x: cat_sorted(x, fire_engine_info, 'name', 'level'
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
