@@ -14,7 +14,7 @@ I am a self-taught data scientist working remotely from India. I don't know if m
 I have worked on the projects listed below :
 - Deep Learning Recommendation Model
 - Hyperbolic Embeddings
-- Chatbots (RASA)
+- Federated Learning 
 
 
 🖌  I regulary write data science blogs on [Medium](https://nishantkumar94.medium.com)
