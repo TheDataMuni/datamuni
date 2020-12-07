@@ -28,11 +28,11 @@ The coding examples are built upon a [Lego Dataset](https://www.kaggle.com/rtatm
 
 First listen to this imaginary dialogue that guides us throug the coding:
 
-<span style="color:green">*I miss all red bricks of the Lego Pizzeria. I definetly need a new one.*</span>
+:hatched_chick: <span style="color:green">*I miss all red bricks of the Lego Pizzeria. I definetly need a new one.*</span>
 
-<span style="color:blue">*Don't worry. We can try to solve this with data. That will be fun. :-)*</span>
+:penguin: <span style="color:blue">*Don't worry. We can try to solve this with data. That will be fun. :-)*</span>
 
-<span style="color:green">*(!@#%&) You're kidding, right?*</span>
+:hatched_chick: <span style="color:green">*(!@#%&) You're kidding, right?*</span>
 
 Now that we have a mission we are ready to code and figuere out how to deal with missing bricks.
 First we inspect the tables. They are organized as shown in the relational diagram ([Fig. 1](#Fig_1)).
@@ -563,9 +563,9 @@ An **index in Pandas** can rather be seen as a **dimensional access** to the dat
 <a id = "joins"></a>
 ## Joins *(Why merge doesn't mean upsert.)*
 
-<span style="color:green">*What are we gonna do now about my missing parts?*</span>
+:hatched_chick: <span style="color:green">*What are we gonna do now about my missing parts?*</span>
 
-<span style="color:blue">*We don't have all the information we need, yet. We need to join the other tables.*</span>
+:penguin: <span style="color:blue">*We don't have all the information we need, yet. We need to join the other tables.*</span>
 
 Though there is a function called `join` to join DataFrames I always use the `merge` function. This can be a bit confusing, when you are used to Oracle where *merge* means upsert/updelete rather then combining two tables.
 
@@ -1362,9 +1362,9 @@ df_missing_parts
 
 
 
-<span style="color:blue">*There we go, we are missing one 2x2 brick and tw0 2x2 double convex.*</span>
+:penguin: <span style="color:blue">*There we go, we are missing one 2x2 brick and tw0 2x2 double convex.*</span>
 
-<span style="color:green">*Yup, that's the roof of the fireplace. I knew that before.*</span>
+:hatched_chick: <span style="color:green">*Yup, that's the roof of the fireplace. I knew that before.*</span>
 
 <a id ="agg"></a>
 ## Conditional Joins and Aggregation *(Almost done!)*
@@ -1948,9 +1948,9 @@ pd._testing.assert_frame_equal(sets_with_missing_parts, df_sets_with_missing_par
 
 The results are matching!
 
-<span style="color:blue">We got it. We can buy the small Fire Engine to fix the roof of the fireplace. Now need for a new Pizzeria. :-)</span>
+:penguin: <span style="color:blue">We got it. We can buy the small Fire Engine to fix the roof of the fireplace. Now need for a new Pizzeria. :-)</span>
 
-<span style="color:green">(#@§?!*#) Are you sure your data is usefull for anything?</span>
+:hatched_chick: <span style="color:green">(#@§?!*#) Are you sure your data is usefull for anything?</span>
 
 <a id = "rec"></a>
 ## Recursion *(Lost in trees?)*
