@@ -1,4 +1,6 @@
-# Table of contents
+# A handful of bricks - from SQL to Pandas
+
+## Table of contents
 
 * [SQL and Pandas](#sql_and_pandas)
 * [Missing bricks](#missing_bricks)
@@ -12,7 +14,7 @@
 * [References](#ref)
 
 <a id="sql_and_pandas"></a>
-# SQL ~~vs.~~ and Pandas
+## SQL ~~vs.~~ and Pandas
 
 I love SQL. It's been around for decades to arrange and analyse data. Data is kept in tables which are stored in a relational structure. Consistancy and data integraty is kept in mind when designing a relational data model. However, when it comes to machine learning other data structures such as matrices and tensors become important to feat the underlying algorithms and make data processing more efficient. That's where Pandas steps in. From a SQL developer perspective it is the library to close the gap between your data storage and the ml frameworks.
 
@@ -22,7 +24,7 @@ The coding examples are built upon a [Lego Dataset](https://www.kaggle.com/rtatm
 > To follow along I've provided a [notebook](https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas) on kaggle, where you can play with the blog examples either using SQLite or Bigquery. You can also checkout a [docker container](https://github.com/joatom/blog-resources/tree/main/handful_bricks) to play on your home machine.
 
 <a id="missing_bricks"></a>
-# Missing bricks
+## Missing bricks
 
 First listen to this imaginary dialogue that guides us throug the coding:
 
@@ -38,7 +40,7 @@ First we inspect the tables. They are organized as shown in the relational diagr
 <a id="Fig_1"></a>
 ![datamodel](./assets/schema.png)
 
-Fig. 1: Data model ([source](https://www.kaggle.com/rtatman/lego-database))
+Fig. 1: Data model ([source: Lego dataset](https://www.kaggle.com/rtatman/lego-database))
 
 There are colors, parts, sets and inventories. We should start by searching for the *Pizzeria* in the `sets` table using the set number (*41311*).
 
@@ -48,7 +50,7 @@ There are colors, parts, sets and inventories. We should start by searching for 
 Fig. 2: Lego Box with set number
 
 <a id = "simple_filter"></a>
-# A simple Filter *(The behaviour of brackets.)*
+## A simple Filter *(The behaviour of brackets.)*
 A simple `like`-filter on the `sets` table will return the set info.
 
 ```sql
@@ -242,7 +244,7 @@ df_sets[df_sets['set_num'] == '41311-1'][['name','year']]
 
 
 <a id = "indexing"></a>
-# Indexing *(What actually is an index?)*
+## Indexing *(What actually is an index?)*
 Another way to access a row in Pandas is by using the row index. With the `loc` function (and brackets) we select the *Pizzeria* and another arbitrary set. We use the row numbers to filter the rows.
 
 
@@ -559,7 +561,7 @@ Now we get a sence what is meant by an index in Pandas in contrast to SQL.
 An **index in Pandas** can rather be seen as a **dimensional access** to the data values. They can be distingueshed between row and column indices.
 
 <a id = "joins"></a>
-# Joins *(Why merge doesn't mean upsert.)*
+## Joins *(Why merge doesn't mean upsert.)*
 
 <span style="color:green">*What are we gonna do now about my missing parts?*</span>
 
@@ -1365,7 +1367,7 @@ df_missing_parts
 <span style="color:green">*Yup, that's the roof of the fireplace. I knew that before.*</span>
 
 <a id ="agg"></a>
-# Conditional Joins and Aggregation *(Almost done!)*
+## Conditional Joins and Aggregation *(Almost done!)*
 
 Next we search for sets that contain the missing parts. The quantity of the parts in the found sets must be greater or equal the quantity of the missing parts.
 
@@ -1418,7 +1420,7 @@ LIMIT 16
 ```
 
 
-## Conditional Join
+### Conditional Join
 
 There is no intuitive way to do a conditional join on DataFrames. The easiest I've [seen](https://stackoverflow.com/questions/23508351/how-to-do-workaround-a-conditional-join-in-python-pandas) so far is a two step solution.
 As substitution for the SQL `WITH`-clause we can reuse `df_missing_parts`.
@@ -1436,7 +1438,7 @@ df_sets_with_missing_parts = df_sets_with_missing_parts[['set_name_missing'] + [
 df_sets_with_missing_parts.columns = ['searching_for_set'] + cols
 ```
 
-## Aggregation
+### Aggregation
 
 In the next step the aggregation of the analytic function 
 ```sql
@@ -1951,7 +1953,7 @@ The results are matching!
 <span style="color:green">(#@§?!*#) Are you sure your data is usefull for anything?</span>
 
 <a id = "rec"></a>
-# Recursion *(Lost in trees?)*
+## Recursion *(Lost in trees?)*
 We solved the red brick problem. But since we have the data already open, let's have a closer look at the *Fire Engine*, set number *336-1*.
 ```sql
 SELECT s.name AS set_name,
@@ -2205,19 +2207,19 @@ fire_engine_info.rolling(10,min_periods=1)['level'].apply(lambda x: sum(10**x), 
 Now, we not only understand the numbers on the lego package but also have a better understandig of Pandas.
 
 <a id="sum"></a>
-# Summary *(Got it!)*
+## Summary *(Got it!)*
 
 SQL stays my favourite language to access structured data arranged over many tables. Pandas shines when data already is gathered together and easily accessable (e.g. as csv file).
 There are alternatives to Pandas to build ml pipelines, such as [Dask](https://docs.dask.org/en/latest/) or [CUDF](https://docs.rapids.ai/api/cudf/stable/). But learning Pandas is a good foundation to learn more of them.
 
 <a id = "res"></a>
-# Resources 
+## Resources 
 To play with the examples:
 - Kaggle notebook: https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas
 - Docker container: https://github.com/joatom/blog-resources/tree/main/handful_bricks
 
 <a id = "ref"></a>
-# References
+## References
 - The Lego dataset: https://www.kaggle.com/rtatman/lego-database
 - Loading datasets from kaggle: https://towardsdatascience.com/how-to-use-kaggle-datasets-in-google-colab-bca5e452a676
 - Jupyter sql magic: https://towardsdatascience.com/jupyter-magics-with-sql-921370099589
