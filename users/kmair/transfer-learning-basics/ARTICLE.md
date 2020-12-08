@@ -46,6 +46,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 from torch import Tensor
 from torch.nn import MSELoss, Linear, ReLU, Sigmoid, Module, BCELoss
 from torch.optim import SGD, Adam
+from torchvision import datasets, models, transforms
 import torchvision
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -66,7 +67,7 @@ label_encoder = preprocessing.LabelEncoder()
 label_encoder.fit(categories)
 ```
 
-Next is the part of creating a basic Dataset for training the model. The main requirements are the `__len__` and `__getitem__` functions and we can add other functions for convenience.
+Next is the part of creating a basic Dataset for training the model. The main requirements are the `__len__` and `__getitem__` functions and we can add other functions for convenience. We can then use a DataLoader for easy shuffling and batch size management.
 
 ```python
 class ImageDataset(torch.utils.data.Dataset):
@@ -104,10 +105,68 @@ class ImageDataset(torch.utils.data.Dataset):
         y = torch.tensor(y[0])  
 
         return image_tensor, y
+
+train_dataset = ImageDataset(train_folder)
+
+params = {
+    'batch_size': batch_size,
+    'shuffle': True,
+    'num_workers': 6
+  }
+max_epochs = 100
+
+train_loader = DataLoader(train_dataset, **params)
 ```
 
-## STEP 3: 
-Notable Research
+## STEP 3: Loading the pre-trained models
 
-- In 2017, a highly accurate model for [predicting breast cancer](https://www.nature.com/articles/nature21056.epdf) was fine-tuned on Google’s Inception v3 CNN architecture. 
+From `torchvision`, we can load various [pre-trained models](https://pytorch.org/docs/stable/torchvision/models.html) based on our usage. Let's say we plan to use the AlexNet model as: 
 
+```python
+model = models.alexnet(pretrained=True)
+
+for param in model.features.parameters():
+    param.requires_grad = False
+```
+
+On printing the model, the architecture looks like:
+
+![](assets/Alexnet-architecture.png)
+
+As seen, the trained model has named features that can be easily accessed and manipulated (we already freezed the features layer from training above) for our case as:
+
+```python
+# Adding our required number of categories to the final layer
+
+# Get number of inputs for the last layer
+n_inputs = model.classifier[6].in_features
+final_layer = nn.Linear(n_inputs, len(categories))
+
+model.classifier[6] = final_layer
+model.to(device)
+```
+
+And that's it! After this, the model can be trained like any other Torch model made from scratch
+
+```python
+def train(n_epochs, train_loader):
+    
+    model.train()
+    for epoch in tqdm(range(n_epochs)):
+        for (image_tensor, target) in tqdm(train_loader):
+                output = model(data.to(device))
+                loss = criterion(output, target.to(device))
+                loss.backward()
+                optimizer.step()
+                train_loss += loss.item()
+                ...
+```
+
+## Notable Research with Transfer Learning
+
+A common focus in the deep learning community is in *"Democratizing deep learning with transfer learning"*
+
+These are some noteworthy researches using transfer learning:
+- In 2017, a highly accurate model for [Predicting breast cancer](https://www.nature.com/articles/nature21056.epdf) was fine-tuned on Google’s Inception v3 CNN architecture. 
+- A recent paper on [Drug discovery](https://pubs.acs.org/doi/abs/10.1021/acs.jmedchem.9b02147) using transfer learning in multiple domains based on tasks.
+- The largest application on transfer learning in the past few years has been on NLP that can be adapted to any language modeling task using [Transformer models](https://www.aclweb.org/anthology/N19-5004.pdf).
