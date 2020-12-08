@@ -28,25 +28,45 @@ In addition, the approach can also be determined based on the compute resources 
 
 ## STEP 2: Preparing the dataset
 
-Alongwith the model research, understanding of the input is very essential to help us pre-process the data for the pretrained model. Here, using PyTorch, the dataset is being pre-processed.
+Alongwith the model research, understanding of the input is very essential to help us pre-process the data for the pretrained model. Lets try an Image Classification task using PyTorch.
 
 ```python
-import os
-import os.path as osp
-import re
-from scipy import ndimage, misc
-from skimage.transform import resize, rescale
-from matplotlib import pyplot
+import os, os.path as osp
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import cv2 
-
 import numpy as np
 import pandas as pd
-from tqdm.notebook import tqdm
+from tqdm import tqdm
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader, random_split
+from torch import Tensor
+from torch.nn import MSELoss, Linear, ReLU, Sigmoid, Module, BCELoss
+from torch.optim import SGD, Adam
+import torchvision
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 ```
 
-Following is a basic Dataset created for the data. 
+We get a dataframe with info of our data called `train_df` with 2 columns:
+- **filename**: of all images
+- **target**: respective target labels (ex: cat, dog, etc.) from our dataset
+
+Let's create an encoder for the target variable
+
+```python
+from sklearn import preprocessing
+
+categories = train_df.targets.unique()
+
+label_encoder = preprocessing.LabelEncoder()
+label_encoder.fit(categories)
+```
+
+Next is the part of creating a basic Dataset for training the model. The main requirements are the `__len__` and `__getitem__` functions and we can add other functions for convenience.
 
 ```python
 class ImageDataset(torch.utils.data.Dataset):
@@ -74,19 +94,19 @@ class ImageDataset(torch.utils.data.Dataset):
             transforms.Resize(self.image_size),
             transforms.CenterCrop(self.image_size),
             transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ])
         image_tensor = transform(image_tensor)
         '''
 
         # Y
-        file_ID = int(file[:-4])
+        file_ID = int(file[:-4]) # Filename w/o extension
         y = label_encoder.transform(train_df.loc[file_ID].values)
         y = torch.tensor(y[0])  
 
         return image_tensor, y
 ```
 
+## STEP 3: 
 Notable Research
 
 - In 2017, a highly accurate model for [predicting breast cancer](https://www.nature.com/articles/nature21056.epdf) was fine-tuned on Google’s Inception v3 CNN architecture. 
