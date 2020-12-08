@@ -2,8 +2,6 @@
 
 ## Table of contents
 
-<<<<<<< HEAD
-=======
 * [SQL and Pandas](#sql_and_pandas)
 * [Missing bricks](#missing_bricks)
 * [A simple Filter *(The behaviour of brackets.)*](#simple_filter)
@@ -16,50 +14,20 @@
 * [References](#ref)
 
 <a id="sql_and_pandas"></a>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 ## SQL ~~vs.~~ and Pandas
 
 I love SQL. It's been around for decades to arrange and analyse data. Data is kept in tables which are stored in a relational structure. Consistancy and data integraty is kept in mind when designing a relational data model. However, when it comes to machine learning other data structures such as matrices and tensors become important to feat the underlying algorithms and make data processing more efficient. That's where Pandas steps in. From a SQL developer perspective it is the library to close the gap between your data storage and the ml frameworks.
 
-<<<<<<< HEAD
-This blog post shows how to translate some common and some advanced techniques from SQL to pandas step-by-step. I didn't just want to write a plain cheat sheet (actually Pandas has a good one to get started: [Comparison SQL](https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html) [Ref. 1]). Rather I want to unwind some concepts that might be helpful for a SQL developer who now and then deals with pandas.
-
-The coding examples are built upon a [Lego Dataset](https://www.kaggle.com/rtatman/lego-database) [Ref. 2], that contains a couple of tables with data about various lego sets. 
-> To follow along I've provided a [notebook](https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas) [Res. 1] on kaggle, where you can play with the blog examples either using SQLite or Bigquery. You can also checkout a [docker container](https://github.com/joatom/blog-resources/tree/main/handful_bricks) [Res. 2] to play on your home machine.
-
-=======
 This blog post shows how to translate some common and some advanced techniques from SQL to pandas step-by-step. I didn't just want to write a plain cheat sheet (actually Pandas has a good one to get started: [Comparison SQL](https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html)). Rather I want to unwind some concepts that might be helpful for a SQL developer who now and then deals with pandas.
 
 The coding examples are built upon a [Lego Dataset](https://www.kaggle.com/rtatman/lego-database), that contains a couple of tables with data about various lego sets. 
 > To follow along I've provided a [notebook](https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas) on kaggle, where you can play with the blog examples either using SQLite or Bigquery. You can also checkout a [docker container](https://github.com/joatom/blog-resources/tree/main/handful_bricks) to play on your home machine.
 
 <a id="missing_bricks"></a>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 ## Missing bricks
 
 First listen to this imaginary dialogue that guides us throug the coding:
 
-<<<<<<< HEAD
-![](assets/chick.png) *I miss all red bricks of the Lego Pizzeria. I definetly need a new one.*
-
-![](assets/penguin.png) *Don't worry. We can try to solve this with data. That will be fun. :-)*
-
-![](assets/chick.png) *(!@#%&) You're kidding, right?*
-
-Now that we have a mission we are ready to code and figuere out how to deal with missing bricks.
-First we inspect the tables. They are organized as shown in the relational diagram (Fig. 1.
-
-![](assets/schema.png)
-
-Fig. 1: Data model ([source: Lego dataset](https://www.kaggle.com/rtatman/lego-database) [Ref. 2])
-
-There are colors, parts, sets and inventories. We should start by searching for the *Pizzeria* in the `sets` table using the set number (*41311*).
-
-![](assets/piz.png)
-
-Fig. 2: Lego Box with set number
-
-=======
 :hatched_chick: <span style="color:green">*I miss all red bricks of the Lego Pizzeria. I definetly need a new one.*</span>
 
 :penguin: <span style="color:blue">*Don't worry. We can try to solve this with data. That will be fun. :-)*</span>
@@ -82,7 +50,6 @@ There are colors, parts, sets and inventories. We should start by searching for 
 Fig. 2: Lego Box with set number
 
 <a id = "simple_filter"></a>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 ## A simple Filter *(The behaviour of brackets.)*
 A simple `like`-filter on the `sets` table will return the set info.
 
@@ -103,12 +70,6 @@ df_sets.query("set_num.str.contains('41311')", engine='python')
 
 
 
-<<<<<<< HEAD
-||set_num|name|year|theme_id|num_parts|
-|-|-|-|-|-|-|
-|**3582**|41311-1|Heartlake Pizzeria|2017|494|287|
-
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -131,7 +92,6 @@ df_sets.query("set_num.str.contains('41311')", engine='python')
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -158,11 +118,6 @@ df_sets[df_sets['set_num'] == '41311-1']
 
 
 
-<<<<<<< HEAD
-||set_num|name|year|theme_id|num_parts|
-|-|-|-|-|-|-|
-|**3582**|41311-1|Heartlake Pizzeria|2017|494|287|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -185,7 +140,6 @@ df_sets[df_sets['set_num'] == '41311-1']
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -195,12 +149,8 @@ Let's take it apart.
 
 `df_sets['set_num']` returns a single column (a *Pandas.Series* object). A Pandas Dataframe is basically a collection of Series. Additionaly there is a row index (often just called *index*) and a column index (*columnnames*). Think of a column store database.
 
-<<<<<<< HEAD
-![](assets/df.png)
-=======
 <a id="Fig_3"></a>
 ![DF](./assets/df.png)
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 Fig. 3: Elements of a Dataframe
 
@@ -274,14 +224,6 @@ df_sets[df_sets['set_num'] == '41311-1'][['name','year']]
 
 
 
-<<<<<<< HEAD
-||name|year|
-|-|-|-|
-|3582|Heartlake Pizzeria|2017|
-
-
-
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -302,7 +244,6 @@ df_sets[df_sets['set_num'] == '41311-1'][['name','year']]
 
 
 <a id = "indexing"></a>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 ## Indexing *(What actually is an index?)*
 Another way to access a row in Pandas is by using the row index. With the `loc` function (and brackets) we select the *Pizzeria* and another arbitrary set. We use the row numbers to filter the rows.
 
@@ -314,12 +255,6 @@ df_sets.loc[[236, 3582]]
 
 
 
-<<<<<<< HEAD
-||set_num|name|year|theme_id|num_parts|
-|-|-|-|-|-|-|
-|**236**|10255-1|Assembly Square|2017|155|4009|
-|**3582**|41311-1|Heartlake Pizzeria|2017|494|287|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -350,17 +285,12 @@ df_sets.loc[[236, 3582]]
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
 If we inspect the DataFrame closely we realize that it doesn't realy look like a simple table but rather like a **cross table**. 
 
-<<<<<<< HEAD
-The first column on the left is a row index and the table header is the column index. In the center the values of the columns are displayed (see Fig. 3). 
-=======
 The first column on the left is a row index and the table header is the column index. In the center the values of the columns are displayed (see [Fig. 3](#Fig_3)). 
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 If we think of the values as a matrix the rows are dimension 0 and columns are dimension 1. The dimension is often used in DataFrame functions as `axis` parameter. E.g. dropping columns can be done using dimensional information:
 
@@ -380,15 +310,6 @@ df_sets.drop(['year'], axis = 1).head(5)
 
 
 
-<<<<<<< HEAD
-||set_num|name|theme_id|num_parts|
-|-|-|-|-|-|
-|**0**|00-1|Weetabix Castle|414|471|
-|**1**|0011-2|Town Mini-Figures|84|12|
-|**2**|0011-3|Castle 2 for 1 Bonus Offer|199|2|
-|**3**|0012-1|Space Mini-Figures|143|12|
-|**4**|0013-1|Space Mini-Figures|143|12|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -437,7 +358,6 @@ df_sets.drop(['year'], axis = 1).head(5)
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -469,16 +389,6 @@ df_sets.set_index('set_num').head()
 
 
 
-<<<<<<< HEAD
-||name|year|theme_id|num_parts|
-|-|-|-|-|-|
-|**set_num**|||||
-|**00-1**|Weetabix Castle|1970|414|471|
-|**0011-2**|Town Mini-Figures|1978|84|12|
-|**0011-3**|Castle 2 for 1 Bonus Offer|1987|199|2|
-|**0012-1**|Space Mini-Figures|1979|143|12|
-|**0013-1**|Space Mini-Figures|1979|143|12|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -534,7 +444,6 @@ df_sets.set_index('set_num').head()
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -548,16 +457,6 @@ df_sets.set_index(['year', 'set_num']).sort_index(axis=0).head() # axis = 0 => r
 
 
 
-<<<<<<< HEAD
-|||name|theme_id|num_parts|
-|-|-|-|-|-|
-|**year**|**set_num**||||
-|**150**|**700.1.1-1**|Individual 2 x 4 Bricks|371|10|
-||**700.1.2-1**|Individual 2 x 2 Bricks|371|9|
-||**700.A-1**|Automatic Binding Bricks Small Brick Set (Lego...|366|24|
-||**700.B.1-1**|Individual 1 x 4 x 2 Window (without glass)|371|7|
-||**700.B.2-1**|Individual 1 x 2 x 3 Window (without glass)|371|7|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -609,7 +508,6 @@ df_sets.set_index(['year', 'set_num']).sort_index(axis=0).head() # axis = 0 => r
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -623,12 +521,6 @@ df_sets.loc[[236, 3582]].reset_index(drop = True) # set drop = False to keep the
 
 
 
-<<<<<<< HEAD
-||set_num|name|year|theme_id|num_parts|
-|-|-|-|-|-|-|
-|**0**|10255-1|Assembly Square|2017|155|4009|
-|**1**|41311-1|Heartlake Pizzeria|2017|494|287|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -659,7 +551,6 @@ df_sets.loc[[236, 3582]].reset_index(drop = True) # set drop = False to keep the
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -669,20 +560,12 @@ Now we get a sence what is meant by an index in Pandas in contrast to SQL.
 
 An **index in Pandas** can rather be seen as a **dimensional access** to the data values. They can be distingueshed between row and column indices.
 
-<<<<<<< HEAD
-## Joins *(Why merge doesn't mean upsert.)*
-
-![](assets/chick.png) *What are we gonna do now about my missing parts?*
-
-![](assets/penguin.png) *We don't have all the information we need, yet. We need to join the other tables.*
-=======
 <a id = "joins"></a>
 ## Joins *(Why merge doesn't mean upsert.)*
 
 :hatched_chick: <span style="color:green">*What are we gonna do now about my missing parts?*</span>
 
 :penguin: <span style="color:blue">*We don't have all the information we need, yet. We need to join the other tables.*</span>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 Though there is a function called `join` to join DataFrames I always use the `merge` function. This can be a bit confusing, when you are used to Oracle where *merge* means upsert/updelete rather then combining two tables.
 
@@ -699,15 +582,6 @@ LIMIT 5
 ```
 
 
-<<<<<<< HEAD
-|set_num|name|year|theme_id|num_parts|id|version|set_num_1|
-|-|-|-|-|-|-|-|-|
-|00-1|Weetabix Castle|1970|414|471|5574|1|00-1|
-|0011-2|Town Mini-Figures|1978|84|12|5087|1|0011-2|
-|0011-3|Castle 2 for 1 Bonus Offer|1987|199|2|2216|1|0011-3|
-|0012-1|Space Mini-Figures|1979|143|12|1414|1|0012-1|
-|0013-1|Space Mini-Figures|1979|143|12|4609|1|0013-1|
-=======
 <table>
     <tr>
         <th>set_num</th>
@@ -770,7 +644,6 @@ LIMIT 5
         <td>0013-1</td>
     </tr>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -792,15 +665,6 @@ df_sets.merge(df_inventories, how = 'inner', left_on = 'set_num', right_on = 'se
 
 
 
-<<<<<<< HEAD
-||set_num|name|year|theme_id|num_parts|id|version|
-|-|-|-|-|-|-|-|-|
-|**0**|00-1|Weetabix Castle|1970|414|471|5574|1|
-|**1**|0011-2|Town Mini-Figures|1978|84|12|5087|1|
-|**2**|0011-3|Castle 2 for 1 Bonus Offer|1987|199|2|2216|1|
-|**3**|0012-1|Space Mini-Figures|1979|143|12|1414|1|
-|**4**|0013-1|Space Mini-Figures|1979|143|12|4609|1|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -867,7 +731,6 @@ df_sets.merge(df_inventories, how = 'inner', left_on = 'set_num', right_on = 'se
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -901,20 +764,6 @@ LIMIT 10
 ```
 
 
-<<<<<<< HEAD
-|set_num|set_name|part_num|part_name|quantity|color|part_cat|
-|-|-|-|-|-|-|-|
-|41311-1|Heartlake Pizzeria|25269pr03|1/4 CIRCLE TILE 1X1 with Pizza Print|4|Tan|Tiles Printed|
-|41311-1|Heartlake Pizzeria|32807|BRICK 1X1X1 1/3, W/ ARCH|4|Red|Other|
-|41311-1|Heartlake Pizzeria|6190|Bar 1 x 3 (Radio Handle, Phone Handset)|1|Red|Bars, Ladders and Fences|
-|41311-1|Heartlake Pizzeria|30374|Bar 4L (Lightsaber Blade / Wand)|1|Light Bluish Gray|Bars, Ladders and Fences|
-|41311-1|Heartlake Pizzeria|99207|Bracket 1 x 2 - 2 x 2 Inverted|1|Black|Plates Special|
-|41311-1|Heartlake Pizzeria|2453b|Brick 1 x 1 x 5 with Solid Stud|4|Tan|Bricks|
-|41311-1|Heartlake Pizzeria|3004|Brick 1 x 2|4|Light Bluish Gray|Bricks|
-|41311-1|Heartlake Pizzeria|3004|Brick 1 x 2|3|Tan|Bricks|
-|41311-1|Heartlake Pizzeria|3004|Brick 1 x 2|1|White|Bricks|
-|41311-1|Heartlake Pizzeria|3245b|Brick 1 x 2 x 2 with Inside Axle Holder|2|White|Bricks|
-=======
 <table>
     <tr>
         <th>set_num</th>
@@ -1016,7 +865,6 @@ LIMIT 10
         <td>Bricks</td>
     </tr>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -1113,20 +961,6 @@ LIMIT 10;
 ```
 
 
-<<<<<<< HEAD
-|set_num|set_name|theme_id|num_parts|part_num|quantity|part_name|color|part_cat|
-|-|-|-|-|-|-|-|-|-|
-|41311-1|Heartlake Pizzeria|494|287|25269pr03|4|1/4 CIRCLE TILE 1X1 with Pizza Print|Tan|Tiles Printed|
-|41311-1|Heartlake Pizzeria|494|287|32807|4|BRICK 1X1X1 1/3, W/ ARCH|Red|Other|
-|41311-1|Heartlake Pizzeria|494|287|6190|1|Bar 1 x 3 (Radio Handle, Phone Handset)|Red|Bars, Ladders and Fences|
-|41311-1|Heartlake Pizzeria|494|287|30374|1|Bar 4L (Lightsaber Blade / Wand)|Light Bluish Gray|Bars, Ladders and Fences|
-|41311-1|Heartlake Pizzeria|494|287|99207|1|Bracket 1 x 2 - 2 x 2 Inverted|Black|Plates Special|
-|41311-1|Heartlake Pizzeria|494|287|2453b|4|Brick 1 x 1 x 5 with Solid Stud|Tan|Bricks|
-|41311-1|Heartlake Pizzeria|494|287|3004|4|Brick 1 x 2|Light Bluish Gray|Bricks|
-|41311-1|Heartlake Pizzeria|494|287|3004|3|Brick 1 x 2|Tan|Bricks|
-|41311-1|Heartlake Pizzeria|494|287|3004|1|Brick 1 x 2|White|Bricks|
-|41311-1|Heartlake Pizzeria|494|287|3245b|2|Brick 1 x 2 x 2 with Inside Axle Holder|White|Bricks|
-=======
 <table>
     <tr>
         <th>set_num</th>
@@ -1250,7 +1084,6 @@ LIMIT 10;
         <td>Bricks</td>
     </tr>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -1265,22 +1098,6 @@ df_test_from_df
 
 
 
-<<<<<<< HEAD
-||set_num|set_name|theme_id|num_parts|part_num|quantity|part_name|color|part_cat|
-|-|-|-|-|-|-|-|-|-|-|
-|**507161**|41311-1|Heartlake Pizzeria|494|287|25269pr03|4|1/4 CIRCLE TILE 1X1 with Pizza Print|Tan|Tiles Printed|
-|**543292**|41311-1|Heartlake Pizzeria|494|287|32807|4|BRICK 1X1X1 1/3, W/ ARCH|Red|Other|
-|**266022**|41311-1|Heartlake Pizzeria|494|287|6190|1|Bar 1 x 3 (Radio Handle, Phone Handset)|Red|Bars, Ladders and Fences|
-|**273113**|41311-1|Heartlake Pizzeria|494|287|30374|1|Bar 4L (Lightsaber Blade / Wand)|Light Bluish Gray|Bars, Ladders and Fences|
-|**306863**|41311-1|Heartlake Pizzeria|494|287|99207|1|Bracket 1 x 2 - 2 x 2 Inverted|Black|Plates Special|
-|**47206**|41311-1|Heartlake Pizzeria|494|287|2453b|4|Brick 1 x 1 x 5 with Solid Stud|Tan|Bricks|
-|**50211**|41311-1|Heartlake Pizzeria|494|287|3004|4|Brick 1 x 2|Light Bluish Gray|Bricks|
-|**45716**|41311-1|Heartlake Pizzeria|494|287|3004|3|Brick 1 x 2|Tan|Bricks|
-|**16485**|41311-1|Heartlake Pizzeria|494|287|3004|1|Brick 1 x 2|White|Bricks|
-|**22890**|41311-1|Heartlake Pizzeria|494|287|3245b|2|Brick 1 x 2 x 2 with Inside Axle Holder|White|Bricks|
-
-
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1419,7 +1236,6 @@ df_test_from_df
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -1448,12 +1264,6 @@ SELECT *
 ```
 
 
-<<<<<<< HEAD
-|set_num|set_name|theme_id|num_parts|part_num|quantity|part_name|color|part_cat|
-|-|-|-|-|-|-|-|-|-|
-|41311-1|Heartlake Pizzeria|494|287|3039|1|Slope 45° 2 x 2|Red|Bricks Sloped|
-|41311-1|Heartlake Pizzeria|494|287|3045|2|Slope 45° 2 x 2 Double Convex|Red|Bricks Sloped|
-=======
 <table>
     <tr>
         <th>set_num</th>
@@ -1489,7 +1299,6 @@ SELECT *
         <td>Bricks Sloped</td>
     </tr>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -1508,19 +1317,6 @@ df_missing_parts
 
 
 
-<<<<<<< HEAD
-||set_num|set_name|theme_id|num_parts|part_num|quantity|part_name|color|part_cat|
-|-|-|-|-|-|-|-|-|-|-|
-|**0**|41311-1|Heartlake Pizzeria|494|287|3039|1|Slope 45° 2 x 2|Red|Bricks Sloped|
-|**1**|41311-1|Heartlake Pizzeria|494|287|3045|2|Slope 45° 2 x 2 Double Convex|Red|Bricks Sloped|
-
-
-
-![](assets/penguin.png) *There we go, we are missing one 2x2 brick and tw0 2x2 double convex.*
-
-![](assets/chick.png) *Yup, that's the roof of the fireplace. I knew that before.*
-
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1571,7 +1367,6 @@ df_missing_parts
 :hatched_chick: <span style="color:green">*Yup, that's the roof of the fireplace. I knew that before.*</span>
 
 <a id ="agg"></a>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 ## Conditional Joins and Aggregation *(Almost done!)*
 
 Next we search for sets that contain the missing parts. The quantity of the parts in the found sets must be greater or equal the quantity of the missing parts.
@@ -1677,23 +1472,6 @@ df_sets_with_missing_parts.groupby(['set_num']).count()  .sort_values('set_num',
 
 
 
-<<<<<<< HEAD
-||searching_for_set|set_name|part_name|num_parts|
-|-|-|-|-|-|
-|**set_num**|||||
-|**llca8-1**|1|1|1|1|
-|**llca21-1**|1|1|1|1|
-|**fruit1-1**|1|1|1|1|
-|**MMMB026-1**|1|1|1|1|
-|**MMMB003-1**|1|1|1|1|
-|**...**|...|...|...|...|
-|**10021-1**|1|1|1|1|
-|**088-1**|1|1|1|1|
-|**080-1**|2|2|2|2|
-|**066-1**|1|1|1|1|
-|**00-4**|1|1|1|1|
-468 rows × 4 columns
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1792,7 +1570,6 @@ df_sets_with_missing_parts.groupby(['set_num']).count()  .sort_values('set_num',
   </tbody>
 </table>
 <p>468 rows × 4 columns</p>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -1809,22 +1586,6 @@ df_sets_with_missing_parts.groupby(['set_num'], as_index = False) \
 
 
 
-<<<<<<< HEAD
-||set_num|matches_per_set|total_num_parts|
-|-|-|-|-|
-|**0**|00-4|1|126|
-|**1**|066-1|1|407|
-|**2**|080-1|2|1420|
-|**3**|088-1|1|615|
-|**4**|10021-1|1|974|
-|**...**|...|...|...|
-|**463**|MMMB003-1|1|15|
-|**464**|MMMB026-1|1|43|
-|**465**|fruit1-1|1|8|
-|**466**|llca21-1|1|42|
-|**467**|llca8-1|1|58|
-468 rows × 3 columns
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1904,7 +1665,6 @@ df_sets_with_missing_parts.groupby(['set_num'], as_index = False) \
   </tbody>
 </table>
 <p>468 rows × 3 columns</p>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -1927,15 +1687,6 @@ df_sets_with_missing_parts.head(5)
 
 
 
-<<<<<<< HEAD
-||searching_for_set|set_num|set_name|part_name|num_parts|matches_per_set|
-|-|-|-|-|-|-|-|
-|**0**|Heartlake Pizzeria|00-4|Weetabix Promotional Windmill|Slope 45° 2 x 2|126|1|
-|**1**|Heartlake Pizzeria|066-1|Basic Building Set|Slope 45° 2 x 2|407|1|
-|**2**|Heartlake Pizzeria|080-1|Basic Building Set with Train|Slope 45° 2 x 2|710|2|
-|**3**|Heartlake Pizzeria|088-1|Super Set|Slope 45° 2 x 2|615|1|
-|**4**|Heartlake Pizzeria|10021-1|U.S.S. Constellation|Slope 45° 2 x 2|974|1|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1996,7 +1747,6 @@ df_sets_with_missing_parts.head(5)
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -2004,18 +1754,11 @@ Let's elaborate the magic that's happening.
 ```python
 df_sets_with_missing_parts.groupby(['set_num'])['part_name']
 ```
-<<<<<<< HEAD
-returns a `GroupByDataFrame` which contains the group names (from `set_num`) and all row/column indicies and values related to the groups. Here only one column `['part_name']` is selected. In the next step [`transform` applies](https://github.com/pandas-dev/pandas/blob/v1.1.4/pandas/core/groupby/generic.py#L514) the given function (`count`) to each column individually but only with the values in the current group. Finaly the results are assigned to each row in the group as shown in Fig. 4.
-
-
-![](assets/trnsf.png)
-=======
 returns a `GroupByDataFrame` which contains the group names (from `set_num`) and all row/column indicies and values related to the groups. Here only one column `['part_name']` is selected. In the next step [`transform` applies](https://github.com/pandas-dev/pandas/blob/v1.1.4/pandas/core/groupby/generic.py#L514) the given function (`count`) to each column individually but only with the values in the current group. Finaly the results are assigned to each row in the group as shown in [Fig. 4](#Fig_4).
 
 <a id="Fig_4"></a>
 
 ![DF](./assets/trnsf.png)
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 Fig. 4: Aggregation with transform
 
@@ -2032,26 +1775,6 @@ df_sets_with_missing_parts
 
 
 
-<<<<<<< HEAD
-||searching_for_set|set_num|set_name|part_name|num_parts|matches_per_set|
-|-|-|-|-|-|-|-|
-|**0**|Heartlake Pizzeria|199-1|Scooter|Slope 45° 2 x 2|41|2|
-|**1**|Heartlake Pizzeria|199-1|Scooter|Slope 45° 2 x 2 Double Convex|41|2|
-|**2**|Heartlake Pizzeria|212-2|Scooter|Slope 45° 2 x 2|41|2|
-|**3**|Heartlake Pizzeria|212-2|Scooter|Slope 45° 2 x 2 Double Convex|41|2|
-|**4**|Heartlake Pizzeria|838-1|Red Roof Bricks Parts Pack, 45 Degree|Slope 45° 2 x 2|58|2|
-|**5**|Heartlake Pizzeria|838-1|Red Roof Bricks Parts Pack, 45 Degree|Slope 45° 2 x 2 Double Convex|58|2|
-|**6**|Heartlake Pizzeria|5151-1|Roof Bricks, Red, 45 Degrees|Slope 45° 2 x 2|59|2|
-|**7**|Heartlake Pizzeria|5151-1|Roof Bricks, Red, 45 Degrees|Slope 45° 2 x 2 Double Convex|59|2|
-|**8**|Heartlake Pizzeria|811-1|Red Roof Bricks, Steep Pitch|Slope 45° 2 x 2|59|2|
-|**9**|Heartlake Pizzeria|811-1|Red Roof Bricks, Steep Pitch|Slope 45° 2 x 2 Double Convex|59|2|
-|**10**|Heartlake Pizzeria|663-1|Hovercraft|Slope 45° 2 x 2|60|2|
-|**11**|Heartlake Pizzeria|663-1|Hovercraft|Slope 45° 2 x 2 Double Convex|60|2|
-|**12**|Heartlake Pizzeria|336-1|Fire Engine|Slope 45° 2 x 2|76|2|
-|**13**|Heartlake Pizzeria|336-1|Fire Engine|Slope 45° 2 x 2 Double Convex|76|2|
-|**14**|Heartlake Pizzeria|6896-1|Celestial Forager|Slope 45° 2 x 2|92|2|
-|**15**|Heartlake Pizzeria|6896-1|Celestial Forager|Slope 45° 2 x 2 Double Convex|92|2|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2211,7 +1934,6 @@ df_sets_with_missing_parts
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -2226,18 +1948,11 @@ pd._testing.assert_frame_equal(sets_with_missing_parts, df_sets_with_missing_par
 
 The results are matching!
 
-<<<<<<< HEAD
-![](assets/penguin.png) We got it. We can buy the small Fire Engine to fix the roof of the fireplace. Now need for a new Pizzeria. :-)
-
-![](assets/chick.png) (#@§?!*#) Are you sure your data is usefull for anything?
-
-=======
 :penguin: <span style="color:blue">We got it. We can buy the small Fire Engine to fix the roof of the fireplace. Now need for a new Pizzeria. :-)</span>
 
 :hatched_chick: <span style="color:green">(#@§?!*#) Are you sure your data is usefull for anything?</span>
 
 <a id = "rec"></a>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 ## Recursion *(Lost in trees?)*
 We solved the red brick problem. But since we have the data already open, let's have a closer look at the *Fire Engine*, set number *336-1*.
 ```sql
@@ -2253,11 +1968,6 @@ SELECT s.name AS set_name,
 ```    
 
 
-<<<<<<< HEAD
-|set_name|year|id|theme_name|parent_id|
-|-|-|-|-|-|
-|Fire Engine|1968|376|Fire|373.0|
-=======
 <table>
     <tr>
         <th>set_name</th>
@@ -2274,7 +1984,6 @@ SELECT s.name AS set_name,
         <td>373.0</td>
     </tr>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -2310,13 +2019,6 @@ SELECT COUNT(1) OVER() - level AS level,
 ```
 
 
-<<<<<<< HEAD
-|level|theme|path|
-|-|-|-|
-|1|Classic|Classic|
-|2|Vehicle|Classic --&gt; Vehicle|
-|3|Fire|Classic --&gt; Vehicle --&gt; Fire|
-=======
 <table>
     <tr>
         <th>level</th>
@@ -2339,7 +2041,6 @@ SELECT COUNT(1) OVER() - level AS level,
         <td>Classic --&gt; Vehicle --&gt; Fire</td>
     </tr>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -2392,23 +2093,12 @@ while not np.isnan(parent_id) and lvl < 10:
     fire_engine_info = fire_engine_info.append(new_info)
 
 fire_engine_info['grp']=0
-<<<<<<< HEAD
-fire_engine_info
-=======
 fire_engine_info    
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 ```
 
 
 
 
-<<<<<<< HEAD
-||id|name|parent_id|level|grp|
-|-|-|-|-|-|-|
-|**375**|376|Fire|373.0|0|0|
-|**372**|373|Vehicle|365.0|1|0|
-|**364**|365|Classic|NaN|2|0|
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2447,7 +2137,6 @@ fire_engine_info
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -2472,11 +2161,6 @@ fire_engine_info.apply(lambda x: cat_sorted(x, fire_engine_info, 'name', 'level'
 
 
 
-<<<<<<< HEAD
-||id|name|parent_id|level|grp|
-|-|-|-|-|-|-|
-|0|Fire --&gt; Vehicle --&gt; Classic||Vehicle --&gt; Classic|||
-=======
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2499,7 +2183,6 @@ fire_engine_info.apply(lambda x: cat_sorted(x, fire_engine_info, 'name', 'level'
     </tr>
   </tbody>
 </table>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
 
 
@@ -2523,25 +2206,12 @@ fire_engine_info.rolling(10,min_periods=1)['level'].apply(lambda x: sum(10**x), 
 
 Now, we not only understand the numbers on the lego package but also have a better understandig of Pandas.
 
-<<<<<<< HEAD
-=======
 <a id="sum"></a>
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 ## Summary *(Got it!)*
 
 SQL stays my favourite language to access structured data arranged over many tables. Pandas shines when data already is gathered together and easily accessable (e.g. as csv file).
 There are alternatives to Pandas to build ml pipelines, such as [Dask](https://docs.dask.org/en/latest/) or [CUDF](https://docs.rapids.ai/api/cudf/stable/). But learning Pandas is a good foundation to learn more of them.
 
-<<<<<<< HEAD
-## Resources 
-To play with the examples:
-- [Res. 1] Kaggle notebook: https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas
-- [Res. 2] Docker container: https://github.com/joatom/blog-resources/tree/main/handful_bricks
-
-## References
-- [Ref. 1] Pandas SQL comparison: https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html
-- [Ref. 2] The Lego dataset: https://www.kaggle.com/rtatman/lego-database
-=======
 <a id = "res"></a>
 ## Resources 
 To play with the examples:
@@ -2555,6 +2225,4 @@ To play with the examples:
 - Jupyter sql magic: https://towardsdatascience.com/jupyter-magics-with-sql-921370099589
 - Setting up bigquery: https://cloud.google.com/bigquery/docs/quickstarts/quickstart-client-libraries
 - Bigquery and Pandas: https://cloud.google.com/bigquery/docs/pandas-gbq-migration
-
->>>>>>> 4d4f867adbdd9a6e908687321396b7749616a81f
 
