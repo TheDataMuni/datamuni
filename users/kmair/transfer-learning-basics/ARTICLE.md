@@ -131,7 +131,7 @@ for param in model.features.parameters():
 
 On printing the model, the architecture looks like:
 
-![](assets/Alexnet-architecture.png)
+![](assets/Alexnet-architecture.PNG)
 
 As seen, the trained model has named features that can be easily accessed and manipulated (we already freezed the features layer from training above) for our case as:
 
