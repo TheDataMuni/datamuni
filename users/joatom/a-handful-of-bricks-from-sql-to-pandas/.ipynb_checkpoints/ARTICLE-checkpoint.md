@@ -8,8 +8,8 @@ I love SQL. It's been around for decades to arrange and analyse data. Data is ke
 
 This blog post shows how to translate some common and some advanced techniques from SQL to pandas step-by-step. I didn't just want to write a plain cheat sheet (actually Pandas has a good one to get started: [Comparison SQL](https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html) [Ref. 1]). Rather I want to unwind some concepts that might be helpful for a SQL developer who now and then deals with pandas.
 
-The coding examples are built upon a [Lego Dataset](https://www.kaggle.com/rtatman/lego-database) [Ref. 2], that contains a couple of tables with data about various lego sets. 
-> To follow along I've provided a [notebook](https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas) [Res. 1] on kaggle, where you can play with the blog examples either using SQLite or Bigquery. You can also checkout a [docker container](https://github.com/joatom/blog-resources/tree/main/handful_bricks) [Res. 2] to play on your home machine.
+The coding examples are built upon a [Lego Dataset](https://www.kaggle.com/rtatman/lego-database), that contains a couple of tables with data about various lego sets. 
+> To follow along I've provided a [notebook](https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas) on kaggle, where you can play with the blog examples either using SQLite or Bigquery. You can also checkout a [docker container](https://github.com/joatom/blog-resources/tree/main/handful_bricks) to play on your home machine.
 
 ## Missing bricks
 
@@ -26,7 +26,7 @@ First we inspect the tables. They are organized as shown in the relational diagr
 
 ![](assets/schema.png)
 
-Fig. 1: Data model ([source: Lego dataset](https://www.kaggle.com/rtatman/lego-database) [Ref. 2])
+Fig. 1: Data model ([source: Lego dataset](https://www.kaggle.com/rtatman/lego-database))
 
 There are colors, parts, sets and inventories. We should start by searching for the *Pizzeria* in the `sets` table using the set number (*41311*).
 
@@ -1027,10 +1027,14 @@ There are alternatives to Pandas to build ml pipelines, such as [Dask](https://d
 
 ## Resources 
 To play with the examples:
-- [Res. 1] Kaggle notebook: https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas
-- [Res. 2] Docker container: https://github.com/joatom/blog-resources/tree/main/handful_bricks
+- Kaggle notebook: https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas
+- Docker container: https://github.com/joatom/blog-resources/tree/main/handful_bricks
 
 ## References
-- [Ref. 1] Pandas SQL comparison: https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html
-- [Ref. 2] The Lego dataset: https://www.kaggle.com/rtatman/lego-database
+- [Ref. 1]: Pandas SQL comparison: https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html
+- [Ref. 2]: The Lego dataset: https://www.kaggle.com/rtatman/lego-database
+- Loading datasets from kaggle: https://towardsdatascience.com/how-to-use-kaggle-datasets-in-google-colab-bca5e452a676
+- Jupyter sql magic: https://towardsdatascience.com/jupyter-magics-with-sql-921370099589
+- Setting up bigquery: https://cloud.google.com/bigquery/docs/quickstarts/quickstart-client-libraries
+- Bigquery and Pandas: https://cloud.google.com/bigquery/docs/pandas-gbq-migration
 
