@@ -47,6 +47,7 @@ Please note:
     - In one PR, you can add yourself as a user and write one article
     - Users without articles will not be accepted
     - You can add only one article with one PR
+    - Github markdown is different. To see how your article would look like, use the DataMuni renderer: https://datamuni.com/renderer
 
 As soon as you create your PR, it will be reviewed and you will be allowed to make changes to make it better. If everything is fine, your PR will be merged and will be visible on DataMuni.com :)
 
