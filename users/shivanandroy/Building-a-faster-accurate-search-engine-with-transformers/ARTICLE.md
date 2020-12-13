@@ -1,10 +1,13 @@
+# Building A Faster & Accurate Search Engine with Transformers & Haystack
+
+
 This article will let you build a faster and accurate Search Engine using `Transformers🤗`
 
 
 ![Search Engine](https://shivanandroy.com/posts/dl/images/covid19.jpg)
 
 
-<br>
+
 
 ## Introduction
 
@@ -87,7 +90,7 @@ df.head()
 ```
 ***
 `pmc_json`
- `34%|███▎      | 24999/74137 [01:29<02:56, 278.06it/s]`
+ `34%|███▎      | 24999/74137 [01:2902:56, 278.06it/s]`
 
 
 `pdf_json`
