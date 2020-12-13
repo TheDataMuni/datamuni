@@ -2,54 +2,38 @@
 
 ## Table of contents
 
-* [SQL and Pandas](#sql_and_pandas)
-* [Missing bricks](#missing_bricks)
-* [A simple Filter *(The behaviour of brackets.)*](#simple_filter)
-* [Indexing *(What actually is an index?)*](#indexing)
-* [Joins *(Why merge doesn't mean upsert.)*](#joins)
-* [Conditional Joins and Aggregation (*Almost done!*)](#agg)
-* [Recursion (*Lost in trees?!*)](#rec)
-* [Summary *(Got it!)*](#sum)
-* [Resources](#res)
-* [References](#ref)
-
-<a id="sql_and_pandas"></a>
 ## SQL ~~vs.~~ and Pandas
 
 I love SQL. It's been around for decades to arrange and analyse data. Data is kept in tables which are stored in a relational structure. Consistancy and data integraty is kept in mind when designing a relational data model. However, when it comes to machine learning other data structures such as matrices and tensors become important to feat the underlying algorithms and make data processing more efficient. That's where Pandas steps in. From a SQL developer perspective it is the library to close the gap between your data storage and the ml frameworks.
 
-This blog post shows how to translate some common and some advanced techniques from SQL to pandas step-by-step. I didn't just want to write a plain cheat sheet (actually Pandas has a good one to get started: [Comparison SQL](https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html)). Rather I want to unwind some concepts that might be helpful for a SQL developer who now and then deals with pandas.
+This blog post shows how to translate some common and some advanced techniques from SQL to pandas step-by-step. I didn't just want to write a plain cheat sheet (actually Pandas has a good one to get started: [Comparison SQL](https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html) [Ref. 1]). Rather I want to unwind some concepts that might be helpful for a SQL developer who now and then deals with pandas.
 
-The coding examples are built upon a [Lego Dataset](https://www.kaggle.com/rtatman/lego-database), that contains a couple of tables with data about various lego sets. 
-> To follow along I've provided a [notebook](https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas) on kaggle, where you can play with the blog examples either using SQLite or Bigquery. You can also checkout a [docker container](https://github.com/joatom/blog-resources/tree/main/handful_bricks) to play on your home machine.
+The coding examples are built upon a [Lego Dataset](https://www.kaggle.com/rtatman/lego-database) [Ref. 2], that contains a couple of tables with data about various lego sets. 
+> To follow along I've provided a [notebook](https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas) [Res. 1] on kaggle, where you can play with the blog examples either using SQLite or Bigquery. You can also checkout a [docker container](https://github.com/joatom/blog-resources/tree/main/handful_bricks) [Res. 2] to play on your home machine.
 
-<a id="missing_bricks"></a>
 ## Missing bricks
 
 First listen to this imaginary dialogue that guides us throug the coding:
 
-:hatched_chick: <span style="color:green">*I miss all red bricks of the Lego Pizzeria. I definetly need a new one.*</span>
+![](assets/chick.png) *I miss all red bricks of the Lego Pizzeria. I definetly need a new one.*
 
-:penguin: <span style="color:blue">*Don't worry. We can try to solve this with data. That will be fun. :-)*</span>
+![](assets/penguin.png) *Don't worry. We can try to solve this with data. That will be fun. :-)*
 
-:hatched_chick: <span style="color:green">*(!@#%&) You're kidding, right?*</span>
+![](assets/chick.png) *(!@#%&) You're kidding, right?*
 
 Now that we have a mission we are ready to code and figuere out how to deal with missing bricks.
-First we inspect the tables. They are organized as shown in the relational diagram ([Fig. 1](#Fig_1)).
+First we inspect the tables. They are organized as shown in the relational diagram (Fig. 1.
 
-<a id="Fig_1"></a>
-![datamodel](./assets/schema.png)
+![](assets/schema.png)
 
-Fig. 1: Data model ([source: Lego dataset](https://www.kaggle.com/rtatman/lego-database))
+Fig. 1: Data model ([source: Lego dataset](https://www.kaggle.com/rtatman/lego-database) [Ref. 2])
 
 There are colors, parts, sets and inventories. We should start by searching for the *Pizzeria* in the `sets` table using the set number (*41311*).
 
-<a id="Fig_2"></a>
-![Pizzeria](./assets/piz.png)
+![](assets/piz.png)
 
 Fig. 2: Lego Box with set number
 
-<a id = "simple_filter"></a>
 ## A simple Filter *(The behaviour of brackets.)*
 A simple `like`-filter on the `sets` table will return the set info.
 
@@ -70,28 +54,10 @@ df_sets.query("set_num.str.contains('41311')", engine='python')
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>set_num</th>
-      <th>name</th>
-      <th>year</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>3582</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>2017</td>
-      <td>494</td>
-      <td>287</td>
-    </tr>
-  </tbody>
-</table>
+||set_num|name|year|theme_id|num_parts|
+|-|-|-|-|-|-|
+|**3582**|41311-1|Heartlake Pizzeria|2017|494|287|
+
 
 
 
@@ -118,28 +84,9 @@ df_sets[df_sets['set_num'] == '41311-1']
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>set_num</th>
-      <th>name</th>
-      <th>year</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>3582</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>2017</td>
-      <td>494</td>
-      <td>287</td>
-    </tr>
-  </tbody>
-</table>
+||set_num|name|year|theme_id|num_parts|
+|-|-|-|-|-|-|
+|**3582**|41311-1|Heartlake Pizzeria|2017|494|287|
 
 
 
@@ -149,8 +96,7 @@ Let's take it apart.
 
 `df_sets['set_num']` returns a single column (a *Pandas.Series* object). A Pandas Dataframe is basically a collection of Series. Additionaly there is a row index (often just called *index*) and a column index (*columnnames*). Think of a column store database.
 
-<a id="Fig_3"></a>
-![DF](./assets/df.png)
+![](assets/df.png)
 
 Fig. 3: Elements of a Dataframe
 
@@ -224,26 +170,12 @@ df_sets[df_sets['set_num'] == '41311-1'][['name','year']]
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>year</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>3582</th>
-      <td>Heartlake Pizzeria</td>
-      <td>2017</td>
-    </tr>
-  </tbody>
-</table>
+||name|year|
+|-|-|-|
+|3582|Heartlake Pizzeria|2017|
 
 
 
-<a id = "indexing"></a>
 ## Indexing *(What actually is an index?)*
 Another way to access a row in Pandas is by using the row index. With the `loc` function (and brackets) we select the *Pizzeria* and another arbitrary set. We use the row numbers to filter the rows.
 
@@ -255,42 +187,16 @@ df_sets.loc[[236, 3582]]
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>set_num</th>
-      <th>name</th>
-      <th>year</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>236</th>
-      <td>10255-1</td>
-      <td>Assembly Square</td>
-      <td>2017</td>
-      <td>155</td>
-      <td>4009</td>
-    </tr>
-    <tr>
-      <th>3582</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>2017</td>
-      <td>494</td>
-      <td>287</td>
-    </tr>
-  </tbody>
-</table>
+||set_num|name|year|theme_id|num_parts|
+|-|-|-|-|-|-|
+|**236**|10255-1|Assembly Square|2017|155|4009|
+|**3582**|41311-1|Heartlake Pizzeria|2017|494|287|
 
 
 
 If we inspect the DataFrame closely we realize that it doesn't realy look like a simple table but rather like a **cross table**. 
 
-The first column on the left is a row index and the table header is the column index. In the center the values of the columns are displayed (see [Fig. 3](#Fig_3)). 
+The first column on the left is a row index and the table header is the column index. In the center the values of the columns are displayed (see Fig. 3). 
 
 If we think of the values as a matrix the rows are dimension 0 and columns are dimension 1. The dimension is often used in DataFrame functions as `axis` parameter. E.g. dropping columns can be done using dimensional information:
 
@@ -310,54 +216,13 @@ df_sets.drop(['year'], axis = 1).head(5)
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>set_num</th>
-      <th>name</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>00-1</td>
-      <td>Weetabix Castle</td>
-      <td>414</td>
-      <td>471</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0011-2</td>
-      <td>Town Mini-Figures</td>
-      <td>84</td>
-      <td>12</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0011-3</td>
-      <td>Castle 2 for 1 Bonus Offer</td>
-      <td>199</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>0012-1</td>
-      <td>Space Mini-Figures</td>
-      <td>143</td>
-      <td>12</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0013-1</td>
-      <td>Space Mini-Figures</td>
-      <td>143</td>
-      <td>12</td>
-    </tr>
-  </tbody>
-</table>
+||set_num|name|theme_id|num_parts|
+|-|-|-|-|-|
+|**0**|00-1|Weetabix Castle|414|471|
+|**1**|0011-2|Town Mini-Figures|84|12|
+|**2**|0011-3|Castle 2 for 1 Bonus Offer|199|2|
+|**3**|0012-1|Space Mini-Figures|143|12|
+|**4**|0013-1|Space Mini-Figures|143|12|
 
 
 
@@ -389,61 +254,14 @@ df_sets.set_index('set_num').head()
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>year</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-    </tr>
-    <tr>
-      <th>set_num</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>00-1</th>
-      <td>Weetabix Castle</td>
-      <td>1970</td>
-      <td>414</td>
-      <td>471</td>
-    </tr>
-    <tr>
-      <th>0011-2</th>
-      <td>Town Mini-Figures</td>
-      <td>1978</td>
-      <td>84</td>
-      <td>12</td>
-    </tr>
-    <tr>
-      <th>0011-3</th>
-      <td>Castle 2 for 1 Bonus Offer</td>
-      <td>1987</td>
-      <td>199</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>0012-1</th>
-      <td>Space Mini-Figures</td>
-      <td>1979</td>
-      <td>143</td>
-      <td>12</td>
-    </tr>
-    <tr>
-      <th>0013-1</th>
-      <td>Space Mini-Figures</td>
-      <td>1979</td>
-      <td>143</td>
-      <td>12</td>
-    </tr>
-  </tbody>
-</table>
+||name|year|theme_id|num_parts|
+|-|-|-|-|-|
+|**set_num**|||||
+|**00-1**|Weetabix Castle|1970|414|471|
+|**0011-2**|Town Mini-Figures|1978|84|12|
+|**0011-3**|Castle 2 for 1 Bonus Offer|1987|199|2|
+|**0012-1**|Space Mini-Figures|1979|143|12|
+|**0013-1**|Space Mini-Figures|1979|143|12|
 
 
 
@@ -457,57 +275,14 @@ df_sets.set_index(['year', 'set_num']).sort_index(axis=0).head() # axis = 0 => r
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>name</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-    </tr>
-    <tr>
-      <th>year</th>
-      <th>set_num</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="5" valign="top">1950</th>
-      <th>700.1.1-1</th>
-      <td>Individual 2 x 4 Bricks</td>
-      <td>371</td>
-      <td>10</td>
-    </tr>
-    <tr>
-      <th>700.1.2-1</th>
-      <td>Individual 2 x 2 Bricks</td>
-      <td>371</td>
-      <td>9</td>
-    </tr>
-    <tr>
-      <th>700.A-1</th>
-      <td>Automatic Binding Bricks Small Brick Set (Lego...</td>
-      <td>366</td>
-      <td>24</td>
-    </tr>
-    <tr>
-      <th>700.B.1-1</th>
-      <td>Individual 1 x 4 x 2 Window (without glass)</td>
-      <td>371</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <th>700.B.2-1</th>
-      <td>Individual 1 x 2 x 3 Window (without glass)</td>
-      <td>371</td>
-      <td>7</td>
-    </tr>
-  </tbody>
-</table>
+|||name|theme_id|num_parts|
+|-|-|-|-|-|
+|**year**|**set_num**||||
+|**150**|**700.1.1-1**|Individual 2 x 4 Bricks|371|10|
+||**700.1.2-1**|Individual 2 x 2 Bricks|371|9|
+||**700.A-1**|Automatic Binding Bricks Small Brick Set (Lego...|366|24|
+||**700.B.1-1**|Individual 1 x 4 x 2 Window (without glass)|371|7|
+||**700.B.2-1**|Individual 1 x 2 x 3 Window (without glass)|371|7|
 
 
 
@@ -521,36 +296,10 @@ df_sets.loc[[236, 3582]].reset_index(drop = True) # set drop = False to keep the
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>set_num</th>
-      <th>name</th>
-      <th>year</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>10255-1</td>
-      <td>Assembly Square</td>
-      <td>2017</td>
-      <td>155</td>
-      <td>4009</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>2017</td>
-      <td>494</td>
-      <td>287</td>
-    </tr>
-  </tbody>
-</table>
+||set_num|name|year|theme_id|num_parts|
+|-|-|-|-|-|-|
+|**0**|10255-1|Assembly Square|2017|155|4009|
+|**1**|41311-1|Heartlake Pizzeria|2017|494|287|
 
 
 
@@ -560,12 +309,11 @@ Now we get a sence what is meant by an index in Pandas in contrast to SQL.
 
 An **index in Pandas** can rather be seen as a **dimensional access** to the data values. They can be distingueshed between row and column indices.
 
-<a id = "joins"></a>
 ## Joins *(Why merge doesn't mean upsert.)*
 
-:hatched_chick: <span style="color:green">*What are we gonna do now about my missing parts?*</span>
+![](assets/chick.png) *What are we gonna do now about my missing parts?*
 
-:penguin: <span style="color:blue">*We don't have all the information we need, yet. We need to join the other tables.*</span>
+![](assets/penguin.png) *We don't have all the information we need, yet. We need to join the other tables.*
 
 Though there is a function called `join` to join DataFrames I always use the `merge` function. This can be a bit confusing, when you are used to Oracle where *merge* means upsert/updelete rather then combining two tables.
 
@@ -582,68 +330,13 @@ LIMIT 5
 ```
 
 
-<table>
-    <tr>
-        <th>set_num</th>
-        <th>name</th>
-        <th>year</th>
-        <th>theme_id</th>
-        <th>num_parts</th>
-        <th>id</th>
-        <th>version</th>
-        <th>set_num_1</th>
-    </tr>
-    <tr>
-        <td>00-1</td>
-        <td>Weetabix Castle</td>
-        <td>1970</td>
-        <td>414</td>
-        <td>471</td>
-        <td>5574</td>
-        <td>1</td>
-        <td>00-1</td>
-    </tr>
-    <tr>
-        <td>0011-2</td>
-        <td>Town Mini-Figures</td>
-        <td>1978</td>
-        <td>84</td>
-        <td>12</td>
-        <td>5087</td>
-        <td>1</td>
-        <td>0011-2</td>
-    </tr>
-    <tr>
-        <td>0011-3</td>
-        <td>Castle 2 for 1 Bonus Offer</td>
-        <td>1987</td>
-        <td>199</td>
-        <td>2</td>
-        <td>2216</td>
-        <td>1</td>
-        <td>0011-3</td>
-    </tr>
-    <tr>
-        <td>0012-1</td>
-        <td>Space Mini-Figures</td>
-        <td>1979</td>
-        <td>143</td>
-        <td>12</td>
-        <td>1414</td>
-        <td>1</td>
-        <td>0012-1</td>
-    </tr>
-    <tr>
-        <td>0013-1</td>
-        <td>Space Mini-Figures</td>
-        <td>1979</td>
-        <td>143</td>
-        <td>12</td>
-        <td>4609</td>
-        <td>1</td>
-        <td>0013-1</td>
-    </tr>
-</table>
+|set_num|name|year|theme_id|num_parts|id|version|set_num_1|
+|-|-|-|-|-|-|-|-|
+|00-1|Weetabix Castle|1970|414|471|5574|1|00-1|
+|0011-2|Town Mini-Figures|1978|84|12|5087|1|0011-2|
+|0011-3|Castle 2 for 1 Bonus Offer|1987|199|2|2216|1|0011-3|
+|0012-1|Space Mini-Figures|1979|143|12|1414|1|0012-1|
+|0013-1|Space Mini-Figures|1979|143|12|4609|1|0013-1|
 
 
 
@@ -665,72 +358,13 @@ df_sets.merge(df_inventories, how = 'inner', left_on = 'set_num', right_on = 'se
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>set_num</th>
-      <th>name</th>
-      <th>year</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-      <th>id</th>
-      <th>version</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>00-1</td>
-      <td>Weetabix Castle</td>
-      <td>1970</td>
-      <td>414</td>
-      <td>471</td>
-      <td>5574</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0011-2</td>
-      <td>Town Mini-Figures</td>
-      <td>1978</td>
-      <td>84</td>
-      <td>12</td>
-      <td>5087</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0011-3</td>
-      <td>Castle 2 for 1 Bonus Offer</td>
-      <td>1987</td>
-      <td>199</td>
-      <td>2</td>
-      <td>2216</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>0012-1</td>
-      <td>Space Mini-Figures</td>
-      <td>1979</td>
-      <td>143</td>
-      <td>12</td>
-      <td>1414</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0013-1</td>
-      <td>Space Mini-Figures</td>
-      <td>1979</td>
-      <td>143</td>
-      <td>12</td>
-      <td>4609</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
+||set_num|name|year|theme_id|num_parts|id|version|
+|-|-|-|-|-|-|-|-|
+|**0**|00-1|Weetabix Castle|1970|414|471|5574|1|
+|**1**|0011-2|Town Mini-Figures|1978|84|12|5087|1|
+|**2**|0011-3|Castle 2 for 1 Bonus Offer|1987|199|2|2216|1|
+|**3**|0012-1|Space Mini-Figures|1979|143|12|1414|1|
+|**4**|0013-1|Space Mini-Figures|1979|143|12|4609|1|
 
 
 
@@ -764,107 +398,18 @@ LIMIT 10
 ```
 
 
-<table>
-    <tr>
-        <th>set_num</th>
-        <th>set_name</th>
-        <th>part_num</th>
-        <th>part_name</th>
-        <th>quantity</th>
-        <th>color</th>
-        <th>part_cat</th>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>25269pr03</td>
-        <td>1/4 CIRCLE TILE 1X1 with Pizza Print</td>
-        <td>4</td>
-        <td>Tan</td>
-        <td>Tiles Printed</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>32807</td>
-        <td>BRICK 1X1X1 1/3, W/ ARCH</td>
-        <td>4</td>
-        <td>Red</td>
-        <td>Other</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>6190</td>
-        <td>Bar 1 x 3 (Radio Handle, Phone Handset)</td>
-        <td>1</td>
-        <td>Red</td>
-        <td>Bars, Ladders and Fences</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>30374</td>
-        <td>Bar 4L (Lightsaber Blade / Wand)</td>
-        <td>1</td>
-        <td>Light Bluish Gray</td>
-        <td>Bars, Ladders and Fences</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>99207</td>
-        <td>Bracket 1 x 2 - 2 x 2 Inverted</td>
-        <td>1</td>
-        <td>Black</td>
-        <td>Plates Special</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>2453b</td>
-        <td>Brick 1 x 1 x 5 with Solid Stud</td>
-        <td>4</td>
-        <td>Tan</td>
-        <td>Bricks</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>3004</td>
-        <td>Brick 1 x 2</td>
-        <td>4</td>
-        <td>Light Bluish Gray</td>
-        <td>Bricks</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>3004</td>
-        <td>Brick 1 x 2</td>
-        <td>3</td>
-        <td>Tan</td>
-        <td>Bricks</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>3004</td>
-        <td>Brick 1 x 2</td>
-        <td>1</td>
-        <td>White</td>
-        <td>Bricks</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>3245b</td>
-        <td>Brick 1 x 2 x 2 with Inside Axle Holder</td>
-        <td>2</td>
-        <td>White</td>
-        <td>Bricks</td>
-    </tr>
-</table>
+|set_num|set_name|part_num|part_name|quantity|color|part_cat|
+|-|-|-|-|-|-|-|
+|41311-1|Heartlake Pizzeria|25269pr03|1/4 CIRCLE TILE 1X1 with Pizza Print|4|Tan|Tiles Printed|
+|41311-1|Heartlake Pizzeria|32807|BRICK 1X1X1 1/3, W/ ARCH|4|Red|Other|
+|41311-1|Heartlake Pizzeria|6190|Bar 1 x 3 (Radio Handle, Phone Handset)|1|Red|Bars, Ladders and Fences|
+|41311-1|Heartlake Pizzeria|30374|Bar 4L (Lightsaber Blade / Wand)|1|Light Bluish Gray|Bars, Ladders and Fences|
+|41311-1|Heartlake Pizzeria|99207|Bracket 1 x 2 - 2 x 2 Inverted|1|Black|Plates Special|
+|41311-1|Heartlake Pizzeria|2453b|Brick 1 x 1 x 5 with Solid Stud|4|Tan|Bricks|
+|41311-1|Heartlake Pizzeria|3004|Brick 1 x 2|4|Light Bluish Gray|Bricks|
+|41311-1|Heartlake Pizzeria|3004|Brick 1 x 2|3|Tan|Bricks|
+|41311-1|Heartlake Pizzeria|3004|Brick 1 x 2|1|White|Bricks|
+|41311-1|Heartlake Pizzeria|3245b|Brick 1 x 2 x 2 with Inside Axle Holder|2|White|Bricks|
 
 
 
@@ -961,129 +506,18 @@ LIMIT 10;
 ```
 
 
-<table>
-    <tr>
-        <th>set_num</th>
-        <th>set_name</th>
-        <th>theme_id</th>
-        <th>num_parts</th>
-        <th>part_num</th>
-        <th>quantity</th>
-        <th>part_name</th>
-        <th>color</th>
-        <th>part_cat</th>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>25269pr03</td>
-        <td>4</td>
-        <td>1/4 CIRCLE TILE 1X1 with Pizza Print</td>
-        <td>Tan</td>
-        <td>Tiles Printed</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>32807</td>
-        <td>4</td>
-        <td>BRICK 1X1X1 1/3, W/ ARCH</td>
-        <td>Red</td>
-        <td>Other</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>6190</td>
-        <td>1</td>
-        <td>Bar 1 x 3 (Radio Handle, Phone Handset)</td>
-        <td>Red</td>
-        <td>Bars, Ladders and Fences</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>30374</td>
-        <td>1</td>
-        <td>Bar 4L (Lightsaber Blade / Wand)</td>
-        <td>Light Bluish Gray</td>
-        <td>Bars, Ladders and Fences</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>99207</td>
-        <td>1</td>
-        <td>Bracket 1 x 2 - 2 x 2 Inverted</td>
-        <td>Black</td>
-        <td>Plates Special</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>2453b</td>
-        <td>4</td>
-        <td>Brick 1 x 1 x 5 with Solid Stud</td>
-        <td>Tan</td>
-        <td>Bricks</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>3004</td>
-        <td>4</td>
-        <td>Brick 1 x 2</td>
-        <td>Light Bluish Gray</td>
-        <td>Bricks</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>3004</td>
-        <td>3</td>
-        <td>Brick 1 x 2</td>
-        <td>Tan</td>
-        <td>Bricks</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>3004</td>
-        <td>1</td>
-        <td>Brick 1 x 2</td>
-        <td>White</td>
-        <td>Bricks</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>3245b</td>
-        <td>2</td>
-        <td>Brick 1 x 2 x 2 with Inside Axle Holder</td>
-        <td>White</td>
-        <td>Bricks</td>
-    </tr>
-</table>
+|set_num|set_name|theme_id|num_parts|part_num|quantity|part_name|color|part_cat|
+|-|-|-|-|-|-|-|-|-|
+|41311-1|Heartlake Pizzeria|494|287|25269pr03|4|1/4 CIRCLE TILE 1X1 with Pizza Print|Tan|Tiles Printed|
+|41311-1|Heartlake Pizzeria|494|287|32807|4|BRICK 1X1X1 1/3, W/ ARCH|Red|Other|
+|41311-1|Heartlake Pizzeria|494|287|6190|1|Bar 1 x 3 (Radio Handle, Phone Handset)|Red|Bars, Ladders and Fences|
+|41311-1|Heartlake Pizzeria|494|287|30374|1|Bar 4L (Lightsaber Blade / Wand)|Light Bluish Gray|Bars, Ladders and Fences|
+|41311-1|Heartlake Pizzeria|494|287|99207|1|Bracket 1 x 2 - 2 x 2 Inverted|Black|Plates Special|
+|41311-1|Heartlake Pizzeria|494|287|2453b|4|Brick 1 x 1 x 5 with Solid Stud|Tan|Bricks|
+|41311-1|Heartlake Pizzeria|494|287|3004|4|Brick 1 x 2|Light Bluish Gray|Bricks|
+|41311-1|Heartlake Pizzeria|494|287|3004|3|Brick 1 x 2|Tan|Bricks|
+|41311-1|Heartlake Pizzeria|494|287|3004|1|Brick 1 x 2|White|Bricks|
+|41311-1|Heartlake Pizzeria|494|287|3245b|2|Brick 1 x 2 x 2 with Inside Axle Holder|White|Bricks|
 
 
 
@@ -1098,144 +532,20 @@ df_test_from_df
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>set_num</th>
-      <th>set_name</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-      <th>part_num</th>
-      <th>quantity</th>
-      <th>part_name</th>
-      <th>color</th>
-      <th>part_cat</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>507161</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>25269pr03</td>
-      <td>4</td>
-      <td>1/4 CIRCLE TILE 1X1 with Pizza Print</td>
-      <td>Tan</td>
-      <td>Tiles Printed</td>
-    </tr>
-    <tr>
-      <th>543292</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>32807</td>
-      <td>4</td>
-      <td>BRICK 1X1X1 1/3, W/ ARCH</td>
-      <td>Red</td>
-      <td>Other</td>
-    </tr>
-    <tr>
-      <th>266022</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>6190</td>
-      <td>1</td>
-      <td>Bar 1 x 3 (Radio Handle, Phone Handset)</td>
-      <td>Red</td>
-      <td>Bars, Ladders and Fences</td>
-    </tr>
-    <tr>
-      <th>273113</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>30374</td>
-      <td>1</td>
-      <td>Bar 4L (Lightsaber Blade / Wand)</td>
-      <td>Light Bluish Gray</td>
-      <td>Bars, Ladders and Fences</td>
-    </tr>
-    <tr>
-      <th>306863</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>99207</td>
-      <td>1</td>
-      <td>Bracket 1 x 2 - 2 x 2 Inverted</td>
-      <td>Black</td>
-      <td>Plates Special</td>
-    </tr>
-    <tr>
-      <th>47206</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>2453b</td>
-      <td>4</td>
-      <td>Brick 1 x 1 x 5 with Solid Stud</td>
-      <td>Tan</td>
-      <td>Bricks</td>
-    </tr>
-    <tr>
-      <th>50211</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>3004</td>
-      <td>4</td>
-      <td>Brick 1 x 2</td>
-      <td>Light Bluish Gray</td>
-      <td>Bricks</td>
-    </tr>
-    <tr>
-      <th>45716</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>3004</td>
-      <td>3</td>
-      <td>Brick 1 x 2</td>
-      <td>Tan</td>
-      <td>Bricks</td>
-    </tr>
-    <tr>
-      <th>16485</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>3004</td>
-      <td>1</td>
-      <td>Brick 1 x 2</td>
-      <td>White</td>
-      <td>Bricks</td>
-    </tr>
-    <tr>
-      <th>22890</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>3245b</td>
-      <td>2</td>
-      <td>Brick 1 x 2 x 2 with Inside Axle Holder</td>
-      <td>White</td>
-      <td>Bricks</td>
-    </tr>
-  </tbody>
-</table>
+||set_num|set_name|theme_id|num_parts|part_num|quantity|part_name|color|part_cat|
+|-|-|-|-|-|-|-|-|-|-|
+|**507161**|41311-1|Heartlake Pizzeria|494|287|25269pr03|4|1/4 CIRCLE TILE 1X1 with Pizza Print|Tan|Tiles Printed|
+|**543292**|41311-1|Heartlake Pizzeria|494|287|32807|4|BRICK 1X1X1 1/3, W/ ARCH|Red|Other|
+|**266022**|41311-1|Heartlake Pizzeria|494|287|6190|1|Bar 1 x 3 (Radio Handle, Phone Handset)|Red|Bars, Ladders and Fences|
+|**273113**|41311-1|Heartlake Pizzeria|494|287|30374|1|Bar 4L (Lightsaber Blade / Wand)|Light Bluish Gray|Bars, Ladders and Fences|
+|**306863**|41311-1|Heartlake Pizzeria|494|287|99207|1|Bracket 1 x 2 - 2 x 2 Inverted|Black|Plates Special|
+|**47206**|41311-1|Heartlake Pizzeria|494|287|2453b|4|Brick 1 x 1 x 5 with Solid Stud|Tan|Bricks|
+|**50211**|41311-1|Heartlake Pizzeria|494|287|3004|4|Brick 1 x 2|Light Bluish Gray|Bricks|
+|**45716**|41311-1|Heartlake Pizzeria|494|287|3004|3|Brick 1 x 2|Tan|Bricks|
+|**16485**|41311-1|Heartlake Pizzeria|494|287|3004|1|Brick 1 x 2|White|Bricks|
+|**22890**|41311-1|Heartlake Pizzeria|494|287|3245b|2|Brick 1 x 2 x 2 with Inside Axle Holder|White|Bricks|
+
+
 
 
 
@@ -1264,41 +574,10 @@ SELECT *
 ```
 
 
-<table>
-    <tr>
-        <th>set_num</th>
-        <th>set_name</th>
-        <th>theme_id</th>
-        <th>num_parts</th>
-        <th>part_num</th>
-        <th>quantity</th>
-        <th>part_name</th>
-        <th>color</th>
-        <th>part_cat</th>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>3039</td>
-        <td>1</td>
-        <td>Slope 45° 2 x 2</td>
-        <td>Red</td>
-        <td>Bricks Sloped</td>
-    </tr>
-    <tr>
-        <td>41311-1</td>
-        <td>Heartlake Pizzeria</td>
-        <td>494</td>
-        <td>287</td>
-        <td>3045</td>
-        <td>2</td>
-        <td>Slope 45° 2 x 2 Double Convex</td>
-        <td>Red</td>
-        <td>Bricks Sloped</td>
-    </tr>
-</table>
+|set_num|set_name|theme_id|num_parts|part_num|quantity|part_name|color|part_cat|
+|-|-|-|-|-|-|-|-|-|
+|41311-1|Heartlake Pizzeria|494|287|3039|1|Slope 45° 2 x 2|Red|Bricks Sloped|
+|41311-1|Heartlake Pizzeria|494|287|3045|2|Slope 45° 2 x 2 Double Convex|Red|Bricks Sloped|
 
 
 
@@ -1317,56 +596,17 @@ df_missing_parts
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>set_num</th>
-      <th>set_name</th>
-      <th>theme_id</th>
-      <th>num_parts</th>
-      <th>part_num</th>
-      <th>quantity</th>
-      <th>part_name</th>
-      <th>color</th>
-      <th>part_cat</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>3039</td>
-      <td>1</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>Red</td>
-      <td>Bricks Sloped</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>41311-1</td>
-      <td>Heartlake Pizzeria</td>
-      <td>494</td>
-      <td>287</td>
-      <td>3045</td>
-      <td>2</td>
-      <td>Slope 45° 2 x 2 Double Convex</td>
-      <td>Red</td>
-      <td>Bricks Sloped</td>
-    </tr>
-  </tbody>
-</table>
+||set_num|set_name|theme_id|num_parts|part_num|quantity|part_name|color|part_cat|
+|-|-|-|-|-|-|-|-|-|-|
+|**0**|41311-1|Heartlake Pizzeria|494|287|3039|1|Slope 45° 2 x 2|Red|Bricks Sloped|
+|**1**|41311-1|Heartlake Pizzeria|494|287|3045|2|Slope 45° 2 x 2 Double Convex|Red|Bricks Sloped|
 
 
 
-:penguin: <span style="color:blue">*There we go, we are missing one 2x2 brick and tw0 2x2 double convex.*</span>
+![](assets/penguin.png) *There we go, we are missing one 2x2 brick and tw0 2x2 double convex.*
 
-:hatched_chick: <span style="color:green">*Yup, that's the roof of the fireplace. I knew that before.*</span>
+![](assets/chick.png) *Yup, that's the roof of the fireplace. I knew that before.*
 
-<a id ="agg"></a>
 ## Conditional Joins and Aggregation *(Almost done!)*
 
 Next we search for sets that contain the missing parts. The quantity of the parts in the found sets must be greater or equal the quantity of the missing parts.
@@ -1472,104 +712,21 @@ df_sets_with_missing_parts.groupby(['set_num']).count()  .sort_values('set_num',
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>searching_for_set</th>
-      <th>set_name</th>
-      <th>part_name</th>
-      <th>num_parts</th>
-    </tr>
-    <tr>
-      <th>set_num</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>llca8-1</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>llca21-1</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>fruit1-1</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>MMMB026-1</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>MMMB003-1</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>10021-1</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>088-1</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>080-1</th>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>066-1</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>00-4</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-<p>468 rows × 4 columns</p>
+||searching_for_set|set_name|part_name|num_parts|
+|-|-|-|-|-|
+|**set_num**|||||
+|**llca8-1**|1|1|1|1|
+|**llca21-1**|1|1|1|1|
+|**fruit1-1**|1|1|1|1|
+|**MMMB026-1**|1|1|1|1|
+|**MMMB003-1**|1|1|1|1|
+|**...**|...|...|...|...|
+|**10021-1**|1|1|1|1|
+|**088-1**|1|1|1|1|
+|**080-1**|2|2|2|2|
+|**066-1**|1|1|1|1|
+|**00-4**|1|1|1|1|
+468 rows × 4 columns
 
 
 
@@ -1586,85 +743,20 @@ df_sets_with_missing_parts.groupby(['set_num'], as_index = False) \
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>set_num</th>
-      <th>matches_per_set</th>
-      <th>total_num_parts</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>00-4</td>
-      <td>1</td>
-      <td>126</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>066-1</td>
-      <td>1</td>
-      <td>407</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>080-1</td>
-      <td>2</td>
-      <td>1420</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>088-1</td>
-      <td>1</td>
-      <td>615</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>10021-1</td>
-      <td>1</td>
-      <td>974</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>463</th>
-      <td>MMMB003-1</td>
-      <td>1</td>
-      <td>15</td>
-    </tr>
-    <tr>
-      <th>464</th>
-      <td>MMMB026-1</td>
-      <td>1</td>
-      <td>43</td>
-    </tr>
-    <tr>
-      <th>465</th>
-      <td>fruit1-1</td>
-      <td>1</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>466</th>
-      <td>llca21-1</td>
-      <td>1</td>
-      <td>42</td>
-    </tr>
-    <tr>
-      <th>467</th>
-      <td>llca8-1</td>
-      <td>1</td>
-      <td>58</td>
-    </tr>
-  </tbody>
-</table>
-<p>468 rows × 3 columns</p>
+||set_num|matches_per_set|total_num_parts|
+|-|-|-|-|
+|**0**|00-4|1|126|
+|**1**|066-1|1|407|
+|**2**|080-1|2|1420|
+|**3**|088-1|1|615|
+|**4**|10021-1|1|974|
+|**...**|...|...|...|
+|**463**|MMMB003-1|1|15|
+|**464**|MMMB026-1|1|43|
+|**465**|fruit1-1|1|8|
+|**466**|llca21-1|1|42|
+|**467**|llca8-1|1|58|
+468 rows × 3 columns
 
 
 
@@ -1687,66 +779,13 @@ df_sets_with_missing_parts.head(5)
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>searching_for_set</th>
-      <th>set_num</th>
-      <th>set_name</th>
-      <th>part_name</th>
-      <th>num_parts</th>
-      <th>matches_per_set</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Heartlake Pizzeria</td>
-      <td>00-4</td>
-      <td>Weetabix Promotional Windmill</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>126</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Heartlake Pizzeria</td>
-      <td>066-1</td>
-      <td>Basic Building Set</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>407</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Heartlake Pizzeria</td>
-      <td>080-1</td>
-      <td>Basic Building Set with Train</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>710</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Heartlake Pizzeria</td>
-      <td>088-1</td>
-      <td>Super Set</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>615</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Heartlake Pizzeria</td>
-      <td>10021-1</td>
-      <td>U.S.S. Constellation</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>974</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
+||searching_for_set|set_num|set_name|part_name|num_parts|matches_per_set|
+|-|-|-|-|-|-|-|
+|**0**|Heartlake Pizzeria|00-4|Weetabix Promotional Windmill|Slope 45° 2 x 2|126|1|
+|**1**|Heartlake Pizzeria|066-1|Basic Building Set|Slope 45° 2 x 2|407|1|
+|**2**|Heartlake Pizzeria|080-1|Basic Building Set with Train|Slope 45° 2 x 2|710|2|
+|**3**|Heartlake Pizzeria|088-1|Super Set|Slope 45° 2 x 2|615|1|
+|**4**|Heartlake Pizzeria|10021-1|U.S.S. Constellation|Slope 45° 2 x 2|974|1|
 
 
 
@@ -1754,11 +793,10 @@ Let's elaborate the magic that's happening.
 ```python
 df_sets_with_missing_parts.groupby(['set_num'])['part_name']
 ```
-returns a `GroupByDataFrame` which contains the group names (from `set_num`) and all row/column indicies and values related to the groups. Here only one column `['part_name']` is selected. In the next step [`transform` applies](https://github.com/pandas-dev/pandas/blob/v1.1.4/pandas/core/groupby/generic.py#L514) the given function (`count`) to each column individually but only with the values in the current group. Finaly the results are assigned to each row in the group as shown in [Fig. 4](#Fig_4).
+returns a `GroupByDataFrame` which contains the group names (from `set_num`) and all row/column indicies and values related to the groups. Here only one column `['part_name']` is selected. In the next step [`transform` applies](https://github.com/pandas-dev/pandas/blob/v1.1.4/pandas/core/groupby/generic.py#L514) the given function (`count`) to each column individually but only with the values in the current group. Finaly the results are assigned to each row in the group as shown in Fig. 4.
 
-<a id="Fig_4"></a>
 
-![DF](./assets/trnsf.png)
+![](assets/trnsf.png)
 
 Fig. 4: Aggregation with transform
 
@@ -1775,165 +813,24 @@ df_sets_with_missing_parts
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>searching_for_set</th>
-      <th>set_num</th>
-      <th>set_name</th>
-      <th>part_name</th>
-      <th>num_parts</th>
-      <th>matches_per_set</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Heartlake Pizzeria</td>
-      <td>199-1</td>
-      <td>Scooter</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>41</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Heartlake Pizzeria</td>
-      <td>199-1</td>
-      <td>Scooter</td>
-      <td>Slope 45° 2 x 2 Double Convex</td>
-      <td>41</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Heartlake Pizzeria</td>
-      <td>212-2</td>
-      <td>Scooter</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>41</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Heartlake Pizzeria</td>
-      <td>212-2</td>
-      <td>Scooter</td>
-      <td>Slope 45° 2 x 2 Double Convex</td>
-      <td>41</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Heartlake Pizzeria</td>
-      <td>838-1</td>
-      <td>Red Roof Bricks Parts Pack, 45 Degree</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>58</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Heartlake Pizzeria</td>
-      <td>838-1</td>
-      <td>Red Roof Bricks Parts Pack, 45 Degree</td>
-      <td>Slope 45° 2 x 2 Double Convex</td>
-      <td>58</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Heartlake Pizzeria</td>
-      <td>5151-1</td>
-      <td>Roof Bricks, Red, 45 Degrees</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>59</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Heartlake Pizzeria</td>
-      <td>5151-1</td>
-      <td>Roof Bricks, Red, 45 Degrees</td>
-      <td>Slope 45° 2 x 2 Double Convex</td>
-      <td>59</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>Heartlake Pizzeria</td>
-      <td>811-1</td>
-      <td>Red Roof Bricks, Steep Pitch</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>59</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>Heartlake Pizzeria</td>
-      <td>811-1</td>
-      <td>Red Roof Bricks, Steep Pitch</td>
-      <td>Slope 45° 2 x 2 Double Convex</td>
-      <td>59</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>Heartlake Pizzeria</td>
-      <td>663-1</td>
-      <td>Hovercraft</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>60</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>Heartlake Pizzeria</td>
-      <td>663-1</td>
-      <td>Hovercraft</td>
-      <td>Slope 45° 2 x 2 Double Convex</td>
-      <td>60</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>Heartlake Pizzeria</td>
-      <td>336-1</td>
-      <td>Fire Engine</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>76</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>Heartlake Pizzeria</td>
-      <td>336-1</td>
-      <td>Fire Engine</td>
-      <td>Slope 45° 2 x 2 Double Convex</td>
-      <td>76</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>Heartlake Pizzeria</td>
-      <td>6896-1</td>
-      <td>Celestial Forager</td>
-      <td>Slope 45° 2 x 2</td>
-      <td>92</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>Heartlake Pizzeria</td>
-      <td>6896-1</td>
-      <td>Celestial Forager</td>
-      <td>Slope 45° 2 x 2 Double Convex</td>
-      <td>92</td>
-      <td>2</td>
-    </tr>
-  </tbody>
-</table>
+||searching_for_set|set_num|set_name|part_name|num_parts|matches_per_set|
+|-|-|-|-|-|-|-|
+|**0**|Heartlake Pizzeria|199-1|Scooter|Slope 45° 2 x 2|41|2|
+|**1**|Heartlake Pizzeria|199-1|Scooter|Slope 45° 2 x 2 Double Convex|41|2|
+|**2**|Heartlake Pizzeria|212-2|Scooter|Slope 45° 2 x 2|41|2|
+|**3**|Heartlake Pizzeria|212-2|Scooter|Slope 45° 2 x 2 Double Convex|41|2|
+|**4**|Heartlake Pizzeria|838-1|Red Roof Bricks Parts Pack, 45 Degree|Slope 45° 2 x 2|58|2|
+|**5**|Heartlake Pizzeria|838-1|Red Roof Bricks Parts Pack, 45 Degree|Slope 45° 2 x 2 Double Convex|58|2|
+|**6**|Heartlake Pizzeria|5151-1|Roof Bricks, Red, 45 Degrees|Slope 45° 2 x 2|59|2|
+|**7**|Heartlake Pizzeria|5151-1|Roof Bricks, Red, 45 Degrees|Slope 45° 2 x 2 Double Convex|59|2|
+|**8**|Heartlake Pizzeria|811-1|Red Roof Bricks, Steep Pitch|Slope 45° 2 x 2|59|2|
+|**9**|Heartlake Pizzeria|811-1|Red Roof Bricks, Steep Pitch|Slope 45° 2 x 2 Double Convex|59|2|
+|**10**|Heartlake Pizzeria|663-1|Hovercraft|Slope 45° 2 x 2|60|2|
+|**11**|Heartlake Pizzeria|663-1|Hovercraft|Slope 45° 2 x 2 Double Convex|60|2|
+|**12**|Heartlake Pizzeria|336-1|Fire Engine|Slope 45° 2 x 2|76|2|
+|**13**|Heartlake Pizzeria|336-1|Fire Engine|Slope 45° 2 x 2 Double Convex|76|2|
+|**14**|Heartlake Pizzeria|6896-1|Celestial Forager|Slope 45° 2 x 2|92|2|
+|**15**|Heartlake Pizzeria|6896-1|Celestial Forager|Slope 45° 2 x 2 Double Convex|92|2|
 
 
 
@@ -1948,11 +845,10 @@ pd._testing.assert_frame_equal(sets_with_missing_parts, df_sets_with_missing_par
 
 The results are matching!
 
-:penguin: <span style="color:blue">We got it. We can buy the small Fire Engine to fix the roof of the fireplace. Now need for a new Pizzeria. :-)</span>
+![](assets/penguin.png) We got it. We can buy the small Fire Engine to fix the roof of the fireplace. Now need for a new Pizzeria. :-)
 
-:hatched_chick: <span style="color:green">(#@§?!*#) Are you sure your data is usefull for anything?</span>
+![](assets/chick.png) (#@§?!*#) Are you sure your data is usefull for anything?
 
-<a id = "rec"></a>
 ## Recursion *(Lost in trees?)*
 We solved the red brick problem. But since we have the data already open, let's have a closer look at the *Fire Engine*, set number *336-1*.
 ```sql
@@ -1968,22 +864,9 @@ SELECT s.name AS set_name,
 ```    
 
 
-<table>
-    <tr>
-        <th>set_name</th>
-        <th>year</th>
-        <th>id</th>
-        <th>theme_name</th>
-        <th>parent_id</th>
-    </tr>
-    <tr>
-        <td>Fire Engine</td>
-        <td>1968</td>
-        <td>376</td>
-        <td>Fire</td>
-        <td>373.0</td>
-    </tr>
-</table>
+|set_name|year|id|theme_name|parent_id|
+|-|-|-|-|-|
+|Fire Engine|1968|376|Fire|373.0|
 
 
 
@@ -2019,28 +902,11 @@ SELECT COUNT(1) OVER() - level AS level,
 ```
 
 
-<table>
-    <tr>
-        <th>level</th>
-        <th>theme</th>
-        <th>path</th>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>Classic</td>
-        <td>Classic</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Vehicle</td>
-        <td>Classic --&gt; Vehicle</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>Fire</td>
-        <td>Classic --&gt; Vehicle --&gt; Fire</td>
-    </tr>
-</table>
+|level|theme|path|
+|-|-|-|
+|1|Classic|Classic|
+|2|Vehicle|Classic --&gt; Vehicle|
+|3|Fire|Classic --&gt; Vehicle --&gt; Fire|
 
 
 
@@ -2093,50 +959,17 @@ while not np.isnan(parent_id) and lvl < 10:
     fire_engine_info = fire_engine_info.append(new_info)
 
 fire_engine_info['grp']=0
-fire_engine_info    
+fire_engine_info
 ```
 
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>name</th>
-      <th>parent_id</th>
-      <th>level</th>
-      <th>grp</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>375</th>
-      <td>376</td>
-      <td>Fire</td>
-      <td>373.0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>372</th>
-      <td>373</td>
-      <td>Vehicle</td>
-      <td>365.0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>364</th>
-      <td>365</td>
-      <td>Classic</td>
-      <td>NaN</td>
-      <td>2</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
+||id|name|parent_id|level|grp|
+|-|-|-|-|-|-|
+|**375**|376|Fire|373.0|0|0|
+|**372**|373|Vehicle|365.0|1|0|
+|**364**|365|Classic|NaN|2|0|
 
 
 
@@ -2161,28 +994,9 @@ fire_engine_info.apply(lambda x: cat_sorted(x, fire_engine_info, 'name', 'level'
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>name</th>
-      <th>parent_id</th>
-      <th>level</th>
-      <th>grp</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Fire --&gt; Vehicle --&gt; Classic</td>
-      <td></td>
-      <td>Vehicle --&gt; Classic</td>
-      <td></td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+||id|name|parent_id|level|grp|
+|-|-|-|-|-|-|
+|0|Fire --&gt; Vehicle --&gt; Classic||Vehicle --&gt; Classic|||
 
 
 
@@ -2206,24 +1020,16 @@ fire_engine_info.rolling(10,min_periods=1)['level'].apply(lambda x: sum(10**x), 
 
 Now, we not only understand the numbers on the lego package but also have a better understandig of Pandas.
 
-<a id="sum"></a>
 ## Summary *(Got it!)*
 
 SQL stays my favourite language to access structured data arranged over many tables. Pandas shines when data already is gathered together and easily accessable (e.g. as csv file).
 There are alternatives to Pandas to build ml pipelines, such as [Dask](https://docs.dask.org/en/latest/) or [CUDF](https://docs.rapids.ai/api/cudf/stable/). But learning Pandas is a good foundation to learn more of them.
 
-<a id = "res"></a>
 ## Resources 
 To play with the examples:
-- Kaggle notebook: https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas
-- Docker container: https://github.com/joatom/blog-resources/tree/main/handful_bricks
+- [Res. 1] Kaggle notebook: https://www.kaggle.com/joatom/a-handful-of-bricks-from-sql-to-pandas
+- [Res. 2] Docker container: https://github.com/joatom/blog-resources/tree/main/handful_bricks
 
-<a id = "ref"></a>
 ## References
-- The Lego dataset: https://www.kaggle.com/rtatman/lego-database
-- Loading datasets from kaggle: https://towardsdatascience.com/how-to-use-kaggle-datasets-in-google-colab-bca5e452a676
-- Jupyter sql magic: https://towardsdatascience.com/jupyter-magics-with-sql-921370099589
-- Setting up bigquery: https://cloud.google.com/bigquery/docs/quickstarts/quickstart-client-libraries
-- Bigquery and Pandas: https://cloud.google.com/bigquery/docs/pandas-gbq-migration
-
-
+- [Ref. 1] Pandas SQL comparison: https://pandas.pydata.org/docs/getting_started/comparison/comparison_with_sql.html
+- [Ref. 2] The Lego dataset: https://www.kaggle.com/rtatman/lego-database
