@@ -1,7 +1,7 @@
-### Disclaimer: This article is not an introduction to Apache Kafka and expects the reader to have some basic understanding of the various terminologies related to Kafka.
-
-### Implementing an Apache Kafka Producer in Python for realtime BBC News Feed
+# Implementing an Apache Kafka Producer in Python for realtime BBC News Feed
 The following article will help you setup Kafka in your local machine and let you read data from BBC RSS feeds and push it to a Kafka topic.
+
+### Disclaimer: This article is not an introduction to Apache Kafka and expects the reader to have some basic understanding of the various terminologies related to Kafka.
 
 #### Setting up Apache Kafka and Zookeeper in your local machine
 Inorder to follow the tutorial, one needs to install Apache Kafka and Apache Zookeeper in their local machine. Also one must have JAVA installed in the system. If you are a MAC user, you can install the above using
@@ -39,10 +39,10 @@ kafka-topics --zookeeper 127.0.0.1:2181 --topic bbcfeed --describe
 ```
 Output
 ```
-Topic: bbcfeed	PartitionCount: 3	ReplicationFactor: 1	Configs: 
-	Topic: bbcfeed	Partition: 0	Leader: 0	Replicas: 0	Isr: 0
-	Topic: bbcfeed	Partition: 1	Leader: 0	Replicas: 0	Isr: 0
-	Topic: bbcfeed	Partition: 2	Leader: 0	Replicas: 0	Isr: 0
+Topic: bbcfeed  PartitionCount: 3   ReplicationFactor: 1    Configs: 
+    Topic: bbcfeed  Partition: 0    Leader: 0   Replicas: 0 Isr: 0
+    Topic: bbcfeed  Partition: 1    Leader: 0   Replicas: 0 Isr: 0
+    Topic: bbcfeed  Partition: 2    Leader: 0   Replicas: 0 Isr: 0
 ```
 Since we arent implementing a consumer in this tutorial but if you want to see the output from the producer we are going to implement, you can create a kafka-consumer from the CLI. To do that run,
 ```
@@ -212,4 +212,13 @@ if __name__=='__main__':
         time.sleep(3600)
 ```
 
-The code above is pretty much self explanatory, but in case you need further clarifications reach out at rohitanil93@gmail.com. If the PR gets approved, I will soon write an article on implementing a Kafka Consumer which will read news from the broker and classify the news feed into various categories using machine learning.
+Snapshot of the response in the Kafka Consumer CLI
+```
+{"title": "Norway excavates a Viking longship fit for a king", "link": "https://www.bbc.co.uk/news/world-europe-55145985", "PublishDateTime": "2020-12-04 00:31:01+00:00"}
+{"title": "The hidden story of African-Irish children", "link": "https://www.bbc.co.uk/news/world-europe-55145873", "PublishDateTime": "2020-12-04 00:28:10+00:00"}
+{"title": "Russian influence under threat in its own back yard", "link": "https://www.bbc.co.uk/news/world-europe-55157174", "PublishDateTime": "2020-12-03 00:24:30+00:00"}
+{"title": "Why did the penguins go to the cinema?", "link": "https://www.bbc.co.uk/news/world-us-canada-55153976", "PublishDateTime": "2020-12-01 23:09:06+00:00"}
+{"title": "Agnes Chow: Hong Kong\u2019s 'real Mulan' fighting for democracy", "link": "https://www.bbc.co.uk/news/world-asia-china-55098392", "PublishDateTime": "2020-12-01 10:55:16+00:00"}
+```
+
+The code above is pretty much self explanatory, but in case you need further clarifications reach out at rohitanil93@gmail.com.
