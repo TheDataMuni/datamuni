@@ -3,7 +3,7 @@
 First let's start with gradient descent. Well, I will not be going into the basics of optimization algorithms. I hope you are familiar with these terms already.
 
 Parameters, 
-![](https://github.com/prajinkhadka/datamuni/edit/main/users/prajinkhadka/optimization-algorithm-visualization/ARTICLE.md)
+![](https://raw.githubusercontent.com/prajinkhadka/Optimization_Algorithms_Visualization/master/Visualization%20Results/DeepinScreenshot_select-area_20201215155920.png)
 
 
 ## Gradient Descent
