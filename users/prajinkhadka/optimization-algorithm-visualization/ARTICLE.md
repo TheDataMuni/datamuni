@@ -3,14 +3,14 @@
 First let's start with gradient descent. Well, I will not be going into the basics of optimization algorithms. I hope you are familiar with these terms already.
 
 Parameters, 
-![](https://raw.githubusercontent.com/prajinkhadka/Optimization_Algorithms_Visualization/528791c8e43a2b74c5dfad1ce4d2aeae23becb34/Visualization%20Results/111.svg)
+![](https://github.com/prajinkhadka/datamuni/edit/main/users/prajinkhadka/optimization-algorithm-visualization/ARTICLE.md)
 
 
 ## Gradient Descent
 
 Well, I am going into the details of gradient descent. I will directly write the formula. Basically, we are trying to minimize the loss moving opposite to the direction of gradient. You are free to use  resources to learn about gradient descent if you are not familiar.
 
-![](https://raw.githubusercontent.com/prajinkhadka/Optimization_Algorithms_Visualization/f9b9bcc65469a11a871a88080b37e2af8b91325f/Visualization%20Results/111.svg)
+![](https://raw.githubusercontent.com/prajinkhadka/Optimization_Algorithms_Visualization/master/Visualization%20Results/DeepinScreenshot_select-area_20201215160133.png)
 where, alpha is the learning rate. 
 
 ## 2d View
@@ -19,7 +19,7 @@ Here, the figure below shows the contour maps on 3d surface. Basically, we have 
 
 As we see the number of epochs increases we move downhill to the blue surface where error is low. That is what gradient descent performs. Well, if you are thinking there is a straight path but it seems that gradient descent is using other longer paths, that's because that is the principled way to move in the direction of gradients.
 
-![](https://raw.githubusercontent.com/prajinkhadka/Optimization_Algorithms_Visualization/master/Visualization%20Results/gGD_3d.gif)
+![](https://raw.githubusercontent.com/prajinkhadka/Optimization_Algorithms_Visualization/master/Visualization%20Results/Gradidnet%20Descetn%202d.gif)
 
 That was on a 3d surface. If you see the same thing on a 2d surface, it might be a bit easy to visualize. Here you can see we are moving towards the blue contour region where the loss is minimum.
 
