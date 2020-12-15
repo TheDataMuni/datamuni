@@ -19,9 +19,11 @@ Here, the figure below shows the contour maps on 3d surface. Basically, we have 
 
 As we see the number of epochs increases we move downhill to the blue surface where error is low. That is what gradient descent performs. Well, if you are thinking there is a straight path but it seems that gradient descent is using other longer paths, that's because that is the principled way to move in the direction of gradients.
 
-![](https://raw.githubusercontent.com/prajinkhadka/Optimization_Algorithms_Visualization/master/Visualization%20Results/Gradidnet%20Descetn%202d.gif)
+![](https://raw.githubusercontent.com/prajinkhadka/Optimization_Algorithms_Visualization/master/Visualization%20Results/gGD_3d.gif)
 
 That was on a 3d surface. If you see the same thing on a 2d surface, it might be a bit easy to visualize. Here you can see we are moving towards the blue contour region where the loss is minimum.
+
+![](https://raw.githubusercontent.com/prajinkhadka/Optimization_Algorithms_Visualization/master/Visualization%20Results/Gradidnet%20Descetn%202d.gif)
 
 That was gradient descent. Feel free to use the resources at the end of this article to learn more how it actually works and why it works.
 
