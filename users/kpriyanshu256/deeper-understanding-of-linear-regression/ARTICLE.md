@@ -53,6 +53,7 @@ Equating derivative to 0, we get
 Applying transpose to both sides of the equation
 
 ![](https://i.upmath.me/svg/%0A%5Cmathbf%7BX%7D%5ET%20%5Cmathbf%7By%7D%20%3D%20%5Cmathbf%7BX%7D%5ET%5Cmathbf%7BX%7D%20%5Cmathbf%7Bw%7D%0A)
+
 Finally, we obtain the expression of our ![](https://i.upmath.me/svg/%5Cmathbf%7Bw%7D) vector for which we obtain minimum MSE.
 
 ![](https://i.upmath.me/svg/%0A%5Cmathbf%7Bw%7D%20%3D%20(%5Cmathbf%7BX%7D%5ET%5Cmathbf%7BX%7D)%5E%7B-1%7D%20%5Cmathbf%7BX%7D%5ET%5Cmathbf%7By%7D%0A)
