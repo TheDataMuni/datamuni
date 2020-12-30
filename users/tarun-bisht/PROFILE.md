@@ -1,0 +1,2 @@
+I am a AI enthusiast, Programmer, Developer and Educator. Teach Computer Science and Physics and working hard to shift in AI space.
+Besides these things, I am Physics enthusiasts highly interested in Astronomy, Quantum Physics and Modern Physics.
