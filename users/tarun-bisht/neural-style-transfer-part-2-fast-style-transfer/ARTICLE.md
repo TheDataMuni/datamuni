@@ -560,7 +560,7 @@ In the above function, we have defined a single training step. Inside the functi
 Downloading coco dataset for training,  we can use any other image dataset with images in bulk. Below line downloads coco dataset using wget in zip format. Further, we create a directory where we unzip that downloaded zip file.
 
 
-{% highlight bash linenos %}
+```bash
 wget http://images.cocodataset.org/zips/train2014.zip
 ```
 
@@ -575,7 +575,7 @@ wget http://images.cocodataset.org/zips/train2014.zip
     
     2020-07-12 08:21:55 (31.0 MB/s) - ‘train2014.zip’ saved [13510573713/13510573713]
 
-{% highlight bash linenos %}
+```bash
 mkdir coco
 unzip -qq train2014.zip -d coco
 ```
@@ -902,13 +902,11 @@ Some Image results
 
 Here we have realtime video stylization in action
 
-<img src='https://github.com/tarun-bisht/fast-style-transfer/raw/master/output/webcam.gif' alt="webcam output">
+![](https://github.com/tarun-bisht/fast-style-transfer/raw/master/output/webcam.gif)
 
-Below is a youtube video which shows video stylization in action
+Below is video stylization in action
 
-<div style="margin:1rem 0;">
-  <a href="http://www.youtube.com/watch?v=GrS4rWifdko"><img src='https://github.com/tarun-bisht/fast-style-transfer/raw/master/output/video.gif' alt="Pithoragarh style transfer"></a>
-</div>
+![](https://github.com/tarun-bisht/fast-style-transfer/raw/master/output/video.gif)
 
 Now generate different images and videos, play with it and share exciting results.
 

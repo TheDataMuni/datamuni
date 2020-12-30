@@ -4,11 +4,13 @@ Neural Style Transfer was first published in the paper "A Neural Algorithm of Ar
 
 If these line do not convince you then see the images below,
 
-<div style="display:flex;padding:0.5rem">
-  <img src='https://github.com/tarun-bisht/fast-style-transfer/raw/master/data/images/content.jpg' alt="content image friendship image" width="346px" height="346px">
-  <img src='https://github.com/tarun-bisht/fast-style-transfer/raw/master/data/images/style.jpg' alt="udnie painting" width="346px" height="346px">
-  <img src='https://github.com/tarun-bisht/fast-style-transfer/raw/master/output/styled.jpg' alt="styled friendship image" width="346px" height="346px">
-</div>
+
+![](https://github.com/tarun-bisht/fast-style-transfer/raw/master/data/images/content.jpg)
+
+![](https://github.com/tarun-bisht/fast-style-transfer/raw/master/data/images/style.jpg)
+
+![](https://github.com/tarun-bisht/fast-style-transfer/raw/master/output/styled.jpg)
+
 
 here we have two images one shows the cute friendship of cat and dog while other is udnie painting by Francis Picabia. Using style transfer technique we have modified friendship image in the style of udnie painting, now it looks like an impressive artwork. If this motivates you and wants to know how this works and how to do this with your images then continue reading I am going to explain this. 
 
@@ -527,12 +529,6 @@ final_image.save("kandinsky_starry.jpg")
 This is an interesting part because we are creating a styled image here. we have defined the number of epochs and steps per epochs and for every epoch, we are calculating loss and optimizing our output image using adam optimizer. 
 
 Finally, at last, we are saving output image into the disk, now its time to show off this image to your friends. Play with it and share exciting results.
-
-Below is the demo video showing style transfer in action.
-
-<div style="margin:1rem 0;">
-  <a href="http://www.youtube.com/watch?v=weVfBfWVuZw"><img src='http://img.youtube.com/vi/weVfBfWVuZw/0.jpg' alt="Gatys style transfer"></a>
-</div>
 
 In the next part, we will be using another style transfer technique which will be 100 times faster than this and can be used to style videos too.
 
