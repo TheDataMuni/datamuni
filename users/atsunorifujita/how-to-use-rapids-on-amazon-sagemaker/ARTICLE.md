@@ -223,7 +223,7 @@ You can also check the Job details from the SageMaker console. This process take
 
 ![](assets/1_3.png)
 
-## Conclution
+## Conclusion
 
 With Amazon SageMaker, you don't have to spend a lot of money on coding time.
 You coded on a ml.t2.large instance (vCPU2, 8GB of memory) and used ml.p3.2xlarge (1 * NVIDIA Tesla V100) only for calculations.
