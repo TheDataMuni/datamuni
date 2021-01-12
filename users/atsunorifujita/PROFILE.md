@@ -1,2 +1,1 @@
-I am a data scientist.
-I live in Japan.
+Data Scientist | Amazon Web Services | Japan
