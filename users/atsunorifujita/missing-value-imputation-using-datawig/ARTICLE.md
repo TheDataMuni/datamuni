@@ -54,12 +54,12 @@ p (color = yellow | othercolumns, imputationmodel)
 The figure below is used as a feature of the assignment model by numerically expressing categorical variables and text variables in the architecture.
 
 #### DataWig architecture
-<img width="500" src="./assets/1_1.png">    
+<img width="500" src="assets/1_1.png">    
 
 #### DataWig performance
 The paper said that the performance was good when compared to other methods.
 
-![DataWig performance](./assets/1_2.png)
+![DataWig performance](assets/1_2.png)
 
 ## How to use DataWig
 
