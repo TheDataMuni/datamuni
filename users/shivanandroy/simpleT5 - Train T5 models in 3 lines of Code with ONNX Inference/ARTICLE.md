@@ -14,14 +14,21 @@ Checkout the [**simpleT5 GitHub repository**](https://github.com/Shivanandroy/si
 Before we jump on how to use simpleT5, a quick introduction about T5 —
 
 ## What is T5 ?
-A T5 is an encoder-decoder model. It converts all NLP problems like language translation, summarization, text generation, question-answering, to a text-to-text task.
-For e.g., in case of translation from English →Serbian, T5 accepts source text: English, as input and tries to convert it into target text: Serbian.
+A `T5` is an encoder-decoder model. It converts all NLP problems like language translation, summarization, text generation, question-answering, to a text-to-text task. 
 
-<script src="https://gist.github.com/Shivanandroy/c18e55d845b5d010a3945defd26dded4.js"></script>
 
-Similarly, in case of summarization, source text or input can be a long description and target text can be a one line summary.
+For e.g., in case of **translation**, T5 accepts `source text`: English, as input and tries to convert it into `target text`: Serbian: 
+| source text 	| target text 	|
+|-	|-	|
+| Hey, there! 	| Хеј тамо! 	|
+| I'm going to train a T5 model with PyTorch 	| Обучићу модел Т5 са ПиТорцх-ом 	|
 
-<script src="https://gist.github.com/Shivanandroy/028e1002585ea498328fb6dc6f92e034.js"></script>
+
+In case of **summarization**, source text or input can be a long description and target text can just be a one line summary. 
+| source text                                                                                                                                                                                                                                                                                                                                                                               	| target text                                                       	|
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-------------------------------------------------------------------	|
+| "Saurav Kant, an alumnus of upGrad and IIIT-B's PG Program in Machine learning and Artificial Intelligence, was a Sr Systems Engineer at Infosys with almost 5 years of work experience. The program and upGrad's 360-degree career support helped him transition to a Data Scientist at Tech Mahindra with 90% salary hike. upGrad's Online Power Learning has powered 3 lakh+ careers." 	| upGrad learner switches to career in ML & Al with 90% salary hike 	|
+
 
 Now, let’s fine-tune a T5 model on summarization task with simpleT5 —
 
@@ -138,6 +145,60 @@ Wall time: 799 ms
 
 [Rahul responds to Parrikar's letter accusing him of visiting Goa]
 ```
+
 The complete script looks like below —
 
-<script src="https://gist.github.com/Shivanandroy/68b363e3853776f8780ec96ed4774298.js"></script>
+```python
+# !pip install simplet5
+
+# --> Dataset
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
+path = "https://raw.githubusercontent.com/Shivanandroy/T5-Finetuning-PyTorch/main/data/news_summary.csv"
+df = pd.read_csv(path)
+
+
+# --> preprocessing dataset: training_df, test_df with "source_text" & "target_text" columns
+
+# simpleT5 expects dataframe to have 2 columns: "source_text" and "target_text"
+df = df.rename(columns={"headlines":"target_text", "text":"source_text"})
+df = df[['source_text', 'target_text']]
+
+# T5 model expects a task related prefix: since it is a summarization task, we will add a prefix "summarize: "
+df['source_text'] = "summarize: " + df['source_text']
+
+train_df, test_df = train_test_split(df, test_size=0.2)
+
+
+# --> Finetuning T5 model with simpleT5
+
+from simplet5 import SimpleT5
+
+model = SimpleT5()
+model.from_pretrained(model_type="t5", model_name="t5-base")
+model.train(train_df=train_df,
+            eval_df=test_df, 
+            source_max_token_len=128, 
+            target_max_token_len=50, 
+            batch_size=8, max_epochs=3, use_gpu=True)
+
+
+# --> Load and inference
+
+# let's load the trained model for inferencing:
+model.load_model("t5","outputs/SimpleT5-epoch-2-train-loss-0.9526", use_gpu=True)
+
+text_to_summarize="""summarize: Rahul Gandhi has replied to Goa CM Manohar Parrikar's letter, 
+which accused the Congress President of using his "visit to an ailing man for political gains". 
+"He's under immense pressure from the PM after our meeting and needs to demonstrate his loyalty by attacking me," 
+Gandhi wrote in his letter. Parrikar had clarified he didn't discuss Rafale deal with Rahul.
+"""
+model.predict(text_to_summarize)
+
+# --> model quantization & ONNX support
+
+# for faster inference on cpu, quantization, onnx support:
+model.convert_and_load_onnx_model(model_dir="outputs/SimpleT5-epoch-2-train-loss-0.9526")
+model.onnx_predict(text_to_summarize)
+```
