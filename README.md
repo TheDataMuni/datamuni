@@ -11,10 +11,7 @@ Step 0: Fork this repository!
 
 ### First time user
 
-First time users need to create a profile and write article in the same Pull Request (PR). To create your own user, follow these steps:
-
 - Create a folder by the same name as your github account name inside `users/`. Let's call it `username`. Note: this must be same as your github username!
-- Create your own PROFILE.md inside `username`. You can add all kinds of information about yourself here and update it anytime you want.
 
 Now you can write articles. Please note that it is not allowed to just create the user and not write any articles. :)
 
@@ -31,7 +28,6 @@ Final structure should look like this:
     datamuni
         |-- users
             |-- username
-            |   |-- PROFILE.md
             |   |-- article-example-1
             |   |   |-- ARTICLE.md
             |   |   |-- title
@@ -44,10 +40,10 @@ Final structure should look like this:
 
 
 Please note:
+
     - In one PR, you can add yourself as a user and write one article
     - Users without articles will not be accepted
     - You can add only one article with one PR
-    - Github markdown is different. To see how your article would look like, use the DataMuni renderer: https://datamuni.com/renderer
 
 As soon as you create your PR, it will be reviewed and you will be allowed to make changes to make it better. If everything is fine, your PR will be merged and will be visible on DataMuni.com :)
 
